@@ -1,0 +1,53 @@
+CREATE TABLE userTable (
+    accessToken TEXT NOT NULL ,
+    address TEXT,
+    age INTEGER AS Int,
+    createdAt TEXT,
+    gender TEXT,
+    id TEXT PRIMARY KEY,
+    name TEXT,
+    phone TEXT,
+    pond_depth REAL AS Float,
+    pond_length REAL AS Float,
+    pond_shape TEXT,
+    pond_width REAL AS Float,
+    species TEXT,
+    updatedAt TEXT
+);
+
+selectAccToken:
+SELECT accessToken
+FROM userTable;
+
+selectName:
+SELECT name
+FROM userTable;
+
+
+selectAll:
+SELECT *
+FROM userTable;
+
+
+
+addUser:
+INSERT OR REPLACE INTO userTable(
+    accessToken,
+    address,
+    age,
+    createdAt,
+    gender,
+    id,
+    name,
+    phone,
+    pond_depth,
+    pond_length,
+    pond_shape,
+    pond_width,
+    species,
+    updatedAt
+)
+VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?);
+
+deleteUser:
+DELETE FROM userTable;
