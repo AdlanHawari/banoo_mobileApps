@@ -16,6 +16,9 @@ class PersonalFormViewModel @Inject constructor(
 
 ): ViewModel() {
 
+//    private val _personalFormState = mutableStateOf(PersonalFormState())
+//    val personalFormState: State<PersonalFormState> = _personalFormState
+
     private val _personalFormState = mutableStateOf(PersonalFormState())
     val personalFormState: State<PersonalFormState> = _personalFormState
 
@@ -53,6 +56,34 @@ class PersonalFormViewModel @Inject constructor(
             is PersonalFormEvent.EnteredAddress -> {
                 _personalFormState.value = personalFormState.value.copy(
                     address = event.address
+                )
+                Log.e("state",personalFormState.value.toString())
+            }
+
+            is PersonalFormEvent.EnteredPondShape -> {
+                _personalFormState.value = personalFormState.value.copy(
+                    pond_shape = event.pond_shape
+                )
+                Log.e("state",personalFormState.value.toString())
+            }
+
+            is PersonalFormEvent.EnteredPondDepth -> {
+                _personalFormState.value = personalFormState.value.copy(
+                    pond_depth = event.pond_depth
+                )
+                Log.e("state",personalFormState.value.toString())
+            }
+
+            is PersonalFormEvent.EnteredPondLength -> {
+                _personalFormState.value = personalFormState.value.copy(
+                    pond_length = event.pond_length
+                )
+                Log.e("state",personalFormState.value.toString())
+            }
+
+            is PersonalFormEvent.EnteredPondWidth -> {
+                _personalFormState.value = personalFormState.value.copy(
+                    pond_width = event.pond_width
                 )
                 Log.e("state",personalFormState.value.toString())
             }

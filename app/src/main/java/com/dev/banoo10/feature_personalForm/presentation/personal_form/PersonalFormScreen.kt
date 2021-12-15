@@ -20,6 +20,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.unit.dp
+import androidx.core.text.isDigitsOnly
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.dev.banoo10.R
@@ -70,7 +71,7 @@ fun PersonalFormScreen(
 //        scope.launch {
 //            pagerState.animateScrollToPage(
 ////                pagerState.currentPage
-//            3
+//            4
 //            )
 ////            pagerState.stopScroll()
 //        }
@@ -98,7 +99,11 @@ fun PersonalFormScreen(
 
 
                 if (page == 0) {
-                    GenderComponent(question = state.itemState[page].subtitle,strokeWidth = 5.dp ){
+                    GenderComponent(
+                        question = state.itemState[page].subtitle,
+                        option = state.itemState[page].options,
+                        strokeWidth = 5.dp
+                    ){
                             getRes ->
 //                        Log.e("result parent", getRes)
                         viewModel.onEvent(PersonalFormEvent.EnteredGender(getRes))
@@ -146,17 +151,26 @@ fun PersonalFormScreen(
 
                     }
                 }
-//                else if (page == 4){
-//                    PondComponent(
-//                        pondNum = 2
-//                    ){
-//                            getRes ->
-////                        if (!getRes.isNullOrEmpty()) isFilled = true
-////                        else isFilled=false
-////                        isFilled = false
-//
-//                    }
-//                }
+                else if (page == 4){
+                    PondComponent(
+                        question = state.itemState[page].subtitle,
+                        options = state.itemState[page].options,
+                        isToggled = false,
+                        placeholder = "Pilih bentuk kolam",
+                        text = listOf(state.pond_depth, state.pond_length, state.pond_width),
+                        onValueChange = listOf(
+                            {viewModel.onEvent(PersonalFormEvent.EnteredPondDepth(it))},
+                            {viewModel.onEvent(PersonalFormEvent.EnteredPondLength(it))},
+                            {viewModel.onEvent(PersonalFormEvent.EnteredPondWidth(it))}
+                        ),
+                        onShapeChange = {viewModel.onEvent(PersonalFormEvent.EnteredPondShape(it))}
+                    ){
+                        getRes ->
+                        if (!getRes.isNullOrEmpty()) isFilled = true
+                        else isFilled=false
+
+                    }
+                }
 
                 Spacer(modifier = Modifier.height(20.dp))
                 Button(
@@ -174,7 +188,8 @@ fun PersonalFormScreen(
                         }
                         isFilled = false
                     },
-                    enabled = isFilled
+                    enabled = if(page < state.itemState.size - 1) isFilled
+                    else true
 //                    enabled = if (result[page].isN)false
 //                    else true
 //                    enabled = if (personalFormItem[page].result.isNullOrEmpty()) false

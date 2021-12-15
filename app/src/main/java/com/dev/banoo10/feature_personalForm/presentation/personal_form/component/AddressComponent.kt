@@ -18,7 +18,7 @@ fun AddressComponent(
     question: String,
     text: String,
     onValueChange: (String) -> Unit,
-    onFilled: (age: String) -> Unit
+    onFilled: (address: String) -> Unit
 ) {
 
     LaunchedEffect(key1 = text){

@@ -31,6 +31,7 @@ import androidx.compose.material.MaterialTheme.colors as colors1
 @Composable
 fun GenderComponent(
     question: String,
+    option: List<String>,
     strokeWidth: Dp,
     onFilled: (gender: String) -> Unit
 ) {
@@ -74,8 +75,9 @@ fun GenderComponent(
                             indication = null,
                             interactionSource = remember { MutableInteractionSource() }
                         ) {
-                            if (index < 1) result = "Pria"
-                            else result = "Wanita"
+                            result = option[index]
+//                            if (index < 1) result = "Pria"
+//                            else result = "Wanita"
                         }
                     ){
                         drawCircle(
@@ -84,7 +86,8 @@ fun GenderComponent(
                             radius = (size.width-14).toFloat() /2f,
 //                    style = Stroke(5.dp.toPx(), cap = StrokeCap.Round),
                         )
-                        if (result.equals("Pria")){
+//                        if (result.equals("Pria")){
+                        if (result.equals(option[0])){
                             if(index<1){
                                 drawCircle(
                                     color = Color.Green,
@@ -94,7 +97,8 @@ fun GenderComponent(
                                 )
                             }
                         }
-                        if(result.equals("Wanita")){
+//                        if(result.equals("Wanita")){
+                        if (result.equals(option[1])){
                             if (index>0){
                                 drawCircle(
                                     color = Color.Green,

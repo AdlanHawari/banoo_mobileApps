@@ -7,6 +7,10 @@ sealed class PersonalFormEvent {
     data class EnteredName(val name: String): PersonalFormEvent()
     data class EnteredAge(val age: String): PersonalFormEvent()
     data class EnteredAddress(val address: String): PersonalFormEvent()
+    data class EnteredPondShape(val pond_shape: String): PersonalFormEvent()
+    data class EnteredPondDepth(val pond_depth: String): PersonalFormEvent()
+    data class EnteredPondLength(val pond_length: String): PersonalFormEvent()
+    data class EnteredPondWidth(val pond_width: String): PersonalFormEvent()
     data class Next(val currentPage:Int): PersonalFormEvent()
 //    object Next: PersonalFormEvent()
 }
