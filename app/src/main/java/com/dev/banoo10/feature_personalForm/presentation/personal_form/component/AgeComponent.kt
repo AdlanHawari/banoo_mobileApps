@@ -1,5 +1,6 @@
 package com.dev.banoo10.feature_personalForm.presentation.personal_form.component
 
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
@@ -25,20 +26,33 @@ import androidx.compose.ui.unit.dp
 fun AgeComponent(
     question: String,
     text: String,
+    focusState: Boolean,
     onValueChange: (String) -> Unit,
     onFilled: (age: String) -> Unit
 
 ) {
     val focusRequester = FocusRequester()
 
+    LaunchedEffect(key1 = focusState){
+        if (focusState){
+            focusRequester.requestFocus()
+        }else{
+            focusRequester.freeFocus()
+        }
+    }
+
     LaunchedEffect(key1 = text){
         onFilled(text)
     }
-
-    DisposableEffect(Unit) {
-        focusRequester.requestFocus()
-        onDispose { }
+    LaunchedEffect(key1 = true){
+//        focusRequester.requestFocus()
+        Log.e("page age","rendered")
     }
+
+//    DisposableEffect(Unit) {
+//        focusRequester.requestFocus()
+//        onDispose { }
+//    }
 
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(text = question)
@@ -66,14 +80,16 @@ fun AgeComponent(
 
             ){
                 BasicTextField(
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+
                     value = text,
                     onValueChange = onValueChange,
                     singleLine = true,
                     textStyle = MaterialTheme.typography.h5.copy(textAlign = TextAlign.Center),
                     modifier = Modifier
                         .fillMaxWidth()
-                        .focusRequester(focusRequester)
+
+                        .focusRequester(focusRequester),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 )
             }
             Spacer(modifier = Modifier.width(20.dp))

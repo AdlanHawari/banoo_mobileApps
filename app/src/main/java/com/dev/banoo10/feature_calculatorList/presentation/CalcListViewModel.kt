@@ -16,12 +16,12 @@ class CalcListViewModel @Inject constructor(
     private val _calcListState = mutableStateOf(CalcListState())
     val calcListState: State<CalcListState> = _calcListState
 
-    init {
-        savedStateHandle.get<String>(Constants.PARAM_TOKEN)?.let { tkn ->
-            _calcListState.value = calcListState.value.copy(
-                tkn = tkn
-            )
-        }
-    }
+//    init {
+//        savedStateHandle.get<String>(Constants.PARAM_TOKEN)?.let { tkn ->
+//            _calcListState.value = calcListState.value.copy(
+//                tkn = tkn
+//            )
+//        }
+//    }
 
 }

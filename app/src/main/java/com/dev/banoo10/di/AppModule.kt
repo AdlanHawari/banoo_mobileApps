@@ -8,6 +8,9 @@ import com.dev.banoo10.feature_auth.domain.use_case.AuthUseCases
 import com.dev.banoo10.feature_auth.domain.use_case.login.*
 import com.dev.banoo10.feature_auth.domain.use_case.otp_form.OtpFormSend
 import com.dev.banoo10.feature_auth.domain.use_case.phone_form.PhoneFormSend
+import com.dev.banoo10.feature_personalForm.data.repository.PersonalDataRepoImpl
+import com.dev.banoo10.feature_personalForm.domain.repository.PersonalDataRepo
+import com.dev.banoo10.feature_personalForm.domain.use_case.PersonalDataUseCase
 import com.squareup.sqldelight.android.AndroidSqliteDriver
 import dagger.Module
 import dagger.Provides
@@ -64,7 +67,8 @@ object AppModule {
     @Singleton
     fun provideAuthRepo(client: HttpClient, database: Database): AuthRepo {
         return AuthRepoImpl(client,database)
-}
+    }
+
 
     @Provides
     @Singleton
@@ -80,7 +84,17 @@ object AppModule {
     }
 
 
+    @Provides
+    @Singleton
+    fun providePersonalDataRepo(client: HttpClient, database: Database): PersonalDataRepo {
+        return PersonalDataRepoImpl(client,database)
+    }
 
+    @Provides
+    @Singleton
+    fun providePersonalDataUseCase(repo: PersonalDataRepo): PersonalDataUseCase {
+        return PersonalDataUseCase(repo)
+    }
 
 
 }

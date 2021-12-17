@@ -29,7 +29,8 @@ fun LoginScreen(
 
         }else{
             navController.navigate(
-                Screen.CalcListScreen.route + "/${viewModel.state.value.token}"
+//                Screen.CalcListScreen.route + "/${viewModel.state.value.token}"
+            Screen.CalcListScreen.route
             )
         }
 

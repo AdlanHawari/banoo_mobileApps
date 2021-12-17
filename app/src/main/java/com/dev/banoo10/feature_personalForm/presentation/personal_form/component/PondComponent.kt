@@ -1,38 +1,33 @@
 package com.dev.banoo10.feature_personalForm.presentation.personal_form.component
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
-import com.dev.banoo10.feature_auth.presentation.dropDownMenu
-import kotlinx.coroutines.delay
-import kotlin.math.exp
 
 //
 //@Composable
@@ -45,6 +40,7 @@ import kotlin.math.exp
 //
 //}
 //
+@ExperimentalComposeUiApi
 @Composable
 fun PondComponent(
     question: String,
@@ -52,6 +48,7 @@ fun PondComponent(
     isToggled: Boolean,
     placeholder: String,
     text: List<String>,
+    keyboardState: Boolean,
     onShapeChange: (String) -> Unit,
     onValueChange: List<(String) -> Unit>,
     onFilled: (filled: String?) -> Unit
@@ -67,6 +64,8 @@ fun PondComponent(
     val lengthOpt = listOf("Diameter", "Panjang")
     val subquest = listOf("Kedalaman", "Diameter", "Lebar")
 
+    val keyboardController = LocalSoftwareKeyboardController.current
+
 //    var subquestState by remember { mutableStateOf(subquest)}
     var lengthTitle by remember { mutableStateOf("")}
 
@@ -80,6 +79,17 @@ fun PondComponent(
         else{
             onFilled(null)
         }
+    }
+
+
+    LaunchedEffect(key1 = keyboardState){
+        if (keyboardState){
+            keyboardController?.hide()
+        }
+        else{
+            keyboardController?.show()
+        }
+
     }
 
     Column(
@@ -241,20 +251,20 @@ fun PondComponent(
 
 }
 
-@Preview
-@Composable
-fun PrevPond() {
-    PondComponent(
-        question = "Ahaha",
-        options = listOf("kucing", "anjing"),
-        isToggled = false,
-        placeholder = "Pilih bentuk kolam",
-        text = listOf("1","2","3","4"),
-        onValueChange = listOf({},{},{}),
-        onShapeChange = {},
-        onFilled = {}
-
-    )
-
-
-}
+//@Preview
+//@Composable
+//fun PrevPond() {
+//    PondComponent(
+//        question = "Ahaha",
+//        options = listOf("kucing", "anjing"),
+//        isToggled = false,
+//        placeholder = "Pilih bentuk kolam",
+//        text = listOf("1","2","3","4"),
+//        onValueChange = listOf({},{},{}),
+//        onShapeChange = {},
+//        onFilled = {}
+//
+//    )
+//
+//
+//}

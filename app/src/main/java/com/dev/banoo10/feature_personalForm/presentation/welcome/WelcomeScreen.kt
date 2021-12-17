@@ -11,10 +11,14 @@ import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import com.dev.banoo10.core.presentation.Screen
 import com.dev.banoo10.ui.theme.Banoo10Theme
 
 @Composable
-fun WelcomeScreen() {
+fun WelcomeScreen(
+    navController: NavController
+) {
     
     Column(
         modifier = Modifier
@@ -32,7 +36,10 @@ fun WelcomeScreen() {
             ))
         Spacer(modifier = Modifier.height(40.dp))
         Button(
-            onClick = {},
+            onClick = {
+                      navController.navigate(Screen.PersonalFormScreen.route)
+
+            },
         ) {
             Text(text = "Lanjutkan",
                 modifier = Modifier
@@ -45,12 +52,12 @@ fun WelcomeScreen() {
 }
 
 
-@Preview(showBackground = true)
-@Composable
-fun WelcomePreview() {
-    Banoo10Theme() {
-        WelcomeScreen()
-
-    }
-
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun WelcomePreview() {
+//    Banoo10Theme() {
+//        WelcomeScreen()
+//
+//    }
+//
+//}

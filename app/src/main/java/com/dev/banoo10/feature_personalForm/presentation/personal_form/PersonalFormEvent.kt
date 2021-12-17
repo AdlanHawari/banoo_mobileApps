@@ -11,6 +11,6 @@ sealed class PersonalFormEvent {
     data class EnteredPondDepth(val pond_depth: String): PersonalFormEvent()
     data class EnteredPondLength(val pond_length: String): PersonalFormEvent()
     data class EnteredPondWidth(val pond_width: String): PersonalFormEvent()
-    data class Next(val currentPage:Int): PersonalFormEvent()
+    object Finish: PersonalFormEvent()
 //    object Next: PersonalFormEvent()
 }

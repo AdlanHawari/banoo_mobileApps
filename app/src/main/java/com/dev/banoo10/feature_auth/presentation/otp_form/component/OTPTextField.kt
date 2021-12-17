@@ -72,10 +72,11 @@ fun OTPTextField(
                         }
                     }
                 },
-                keyboardOptions = KeyboardOptions.Default.copy(
-                    keyboardType = KeyboardType.Number,
-                    imeAction = ImeAction.Next
-                )
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+//                keyboardOptions = KeyboardOptions.Default.copy(
+//                    keyboardType = KeyboardType.Number,
+//                    imeAction = ImeAction.Next
+//                )
             )
             Spacer(modifier = Modifier.width(15.dp))
         }

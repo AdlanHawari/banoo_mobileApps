@@ -14,7 +14,5 @@ data class PersonalFormState(
     val currentpage: Int = 0,
     val text: String = "",
     val hint: String = "",
-    val isHintVisible: Boolean = true,
     val isLoading: Boolean = false,
-    val isButtonEnable: Boolean = false
 )

@@ -52,7 +52,7 @@ class OtpFormViewModel @Inject constructor(
 
 
     private fun startTimer(){
-        countDownTimer = object : CountDownTimer(61000L, 1000){
+        countDownTimer = object : CountDownTimer(300000L, 1000){
             override fun onTick(millisUntilFinished: Long) {
                 Log.e("timer",millisUntilFinished.formatTime())
                 _otpFormState.value = otpFormState.value.copy(
@@ -104,7 +104,9 @@ class OtpFormViewModel @Inject constructor(
 
                                 }
                                 is Resource.Error -> {
-                                    _otpFormState.value = OtpFormState(isLoading = false)
+                                    _otpFormState.value = otpFormState.value.copy(
+                                        isLoading = false
+                                    )
                                     _eventFlow.emit(
                                         OtpFormViewModel.UiEvent.ShowSnackbar(
                                             message = result.message.toString()
@@ -112,7 +114,9 @@ class OtpFormViewModel @Inject constructor(
                                     )
                                 }
                                 is Resource.Loading -> {
-                                    _otpFormState.value = OtpFormState(isLoading = true)
+                                    _otpFormState.value = otpFormState.value.copy(
+                                        isLoading = true
+                                    )
                                 }
 
 
@@ -126,7 +130,9 @@ class OtpFormViewModel @Inject constructor(
                     .onEach { result ->
                         when (result){
                             is Resource.Success -> {
-                                _otpFormState.value = OtpFormState(isLoading = false)
+                                _otpFormState.value = otpFormState.value.copy(
+                                    isLoading = false
+                                )
                                 _eventFlow.emit(
                                     UiEvent.ShowSnackbar(
                                         message = "Kode OTP telah dikirim"
@@ -136,7 +142,9 @@ class OtpFormViewModel @Inject constructor(
 
                             }
                             is Resource.Error -> {
-                                _otpFormState.value = OtpFormState(isLoading = false)
+                                _otpFormState.value = otpFormState.value.copy(
+                                    isLoading = false
+                                )
                                 _eventFlow.emit(
                                     UiEvent.ShowSnackbar(
                                         message = result.message.toString()
@@ -144,7 +152,9 @@ class OtpFormViewModel @Inject constructor(
                                 )
                             }
                             is Resource.Loading -> {
-                                _otpFormState.value = OtpFormState(isLoading = true)
+                                _otpFormState.value = otpFormState.value.copy(
+                                    isLoading = true
+                                )
 //                                _eventFlow.emit(
 //                                    UiEvent.ShowSnackbar(
 //                                        message = "Kode OTP telah dikirim"

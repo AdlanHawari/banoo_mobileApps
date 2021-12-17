@@ -47,7 +47,8 @@ fun OtpFormScreen(
                 }
                 is  OtpFormViewModel.UiEvent.SendOTP -> {
                     navController.navigate(
-                        Screen.CalcListScreen.route +"/${event.token}"
+//                        Screen.CalcListScreen.route +"/${event.token}"
+                        Screen.CalcListScreen.route
 //                        Screen.OtpFormScreen.route + "/80909809"
                     )
                 }

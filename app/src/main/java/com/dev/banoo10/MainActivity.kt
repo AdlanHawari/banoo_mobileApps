@@ -7,6 +7,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -27,6 +28,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    @ExperimentalComposeUiApi
     @ExperimentalPagerApi
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -41,12 +43,13 @@ class MainActivity : ComponentActivity() {
                     val navController = rememberNavController()
                     NavHost(
                         navController = navController,
-//                        startDestination = Screen.LoginScreen.route
+                        startDestination = Screen.LoginScreen.route
 //                        startDestination = Screen.PhoneFormScreen.route
 //                        startDestination = Screen.DeleteScreen.route
 //                        startDestination = Screen.OtpFormScreen.route
 //                        startDestination = Screen.WelcomeScreen.route
-                        startDestination = Screen.PersonalFormScreen.route
+//                        startDestination = Screen.PersonalFormScreen.route
+//                          startDestination = Screen.CalcListScreen.route
 //                        startDestination = Screen.ExampleScreen.route
                     ){
                         composable(
@@ -70,19 +73,20 @@ class MainActivity : ComponentActivity() {
                             ExampleScreen()
                         }
                         composable(
-                            route = Screen.CalcListScreen.route + "/{token}"
+//                            route = Screen.CalcListScreen.route + "/{token}"
+                            route = Screen.CalcListScreen.route
                         ){
                             CalcListScreen()
                         }
                         composable(
                             route = Screen.WelcomeScreen.route
                         ){
-                            WelcomeScreen()
+                            WelcomeScreen(navController = navController)
                         }
                         composable(
                             route = Screen.PersonalFormScreen.route
                         ){
-                            PersonalFormScreen()
+                            PersonalFormScreen(navController = navController)
                         }
                         composable(
                             route = Screen.DeleteScreen.route
