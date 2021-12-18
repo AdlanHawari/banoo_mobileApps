@@ -8,5 +8,7 @@ interface PersonalDataRepo {
 
     fun getAccessToken(): String
 
+    suspend fun editPersonalDataLocal(personalDataResponse: PersonalDataResponse)
+
     suspend fun postPersonalData(personalDataRequest: PersonalDataRequest, accToken: String): PersonalDataResponse
 }

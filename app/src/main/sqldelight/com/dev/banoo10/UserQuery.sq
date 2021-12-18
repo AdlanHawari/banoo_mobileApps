@@ -28,6 +28,22 @@ selectAll:
 SELECT *
 FROM userTable;
 
+editUser:
+UPDATE userTable
+-- SET (address, age, gender, name, pond_depth, pond_length, pond_shape, pond_width)
+SET address = ?,
+    age = ?,
+    gender = ?,
+    name = ?,
+    phone = ?,
+    species = ?,
+    pond_depth = ?,
+    pond_length = ?,
+    pond_shape = ?,
+    pond_width = ?,
+    createdAt = ?,
+    updatedAt = ?
+WHERE id = ?;
 
 
 addUser:

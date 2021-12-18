@@ -22,6 +22,9 @@ class PersonalDataUseCase @Inject constructor(
             val accToken = repo.getAccessToken()
 //            val accToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImFhNGExNTMwLWIxMDMtNDE2YS1hZTNhLWY2NmI0NjAzM2UxNCIsImlhdCI6MTYzOTU4ODk5NX0.kPjGKAraBo2rVHtacJzwlANJfQ1fYDcLoVPLyWbQCqQ"
             val resp = repo.postPersonalData(personalDataRequest,accToken)
+
+            repo.editPersonalDataLocal(resp)
+
             emit(Resource.Success<PersonalDataResponse>(resp))
             Log.e("use_case",resp.toString())
 

@@ -57,6 +57,11 @@ class DeleteViewModel  @Inject constructor(
             .launchIn(viewModelScope)
     }
 
+    private fun getUserData(){
+        val data = authUseCases.getUserLocal()
+        Log.e("data",data.toString())
+    }
+
     fun onEvent(event: DeleteEvent){
         when(event){
             is DeleteEvent.LogoutClicked -> {
@@ -67,7 +72,9 @@ class DeleteViewModel  @Inject constructor(
             }
             is DeleteEvent.ShowClicked -> {
                 getAccTok()
-
+            }
+            is DeleteEvent.ProfileClicked -> {
+                getUserData()
             }
         }
     }

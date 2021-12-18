@@ -97,7 +97,7 @@ fun OtpFormScreen(
 
                 }
                 
-                OTPTextField(length = 6){
+                OTPTextField(length = 4){
                     getOpt -> otpVal
                     viewModel.onEvent(OtpFormEvent.EnteredOTP(getOpt))
 //                    Log.e("otp",getOpt)

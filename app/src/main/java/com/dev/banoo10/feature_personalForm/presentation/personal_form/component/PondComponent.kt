@@ -94,7 +94,7 @@ fun PondComponent(
 
     Column(
 //        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
+//        verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(text = question)

@@ -37,6 +37,13 @@ fun DeleteScreen(
                 Text(text = "Logout", color = Color.White)
 
             }
+            Spacer(modifier = Modifier.height(40.dp))
+            Button(onClick = {viewModel.onEvent(DeleteEvent.ProfileClicked)},
+                colors = ButtonDefaults.buttonColors(backgroundColor = Color.Magenta)
+            ) {
+                Text(text = "Profile", color = Color.White)
+
+            }
 
 
     }

@@ -243,25 +243,25 @@ fun PersonalFormScreen(
 
             }
 
-            if (state.isLoading){
-                Box(modifier = Modifier
-                    .fillMaxSize()
-                    .background(Color.DarkGray.copy(alpha = .6f)),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Box(modifier = Modifier
-                        .clip(RoundedCornerShape(12.dp))
-                        .background(Color.White)
-                    ){
-                        CircularProgressIndicator(modifier = Modifier
-                            .align(Alignment.Center)
-                            .padding(20.dp))
-                    }
-
-
-                }
-
-            }
+//            if (state.isLoading){
+//                Box(modifier = Modifier
+//                    .fillMaxSize()
+//                    .background(Color.DarkGray.copy(alpha = .6f)),
+//                    contentAlignment = Alignment.Center
+//                ) {
+//                    Box(modifier = Modifier
+//                        .clip(RoundedCornerShape(12.dp))
+//                        .background(Color.White)
+//                    ){
+//                        CircularProgressIndicator(modifier = Modifier
+//                            .align(Alignment.Center)
+//                            .padding(20.dp))
+//                    }
+//
+//
+//                }
+//
+//            }
 
 //        }
 

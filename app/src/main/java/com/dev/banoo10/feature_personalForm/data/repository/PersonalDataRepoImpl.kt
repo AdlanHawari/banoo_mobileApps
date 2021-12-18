@@ -32,4 +32,25 @@ class PersonalDataRepoImpl @Inject constructor(
             body = personalDataRequest
         }
     }
+
+    override suspend fun editPersonalDataLocal(
+        personalDataResponse: PersonalDataResponse
+    ) {
+        database.userQueryQueries.editUser(
+            personalDataResponse.address,
+            personalDataResponse.age,
+            personalDataResponse.gender,
+            personalDataResponse.name,
+            personalDataResponse.phone,
+            personalDataResponse.species,
+            personalDataResponse.pond_depth,
+            personalDataResponse.pond_length,
+            personalDataResponse.pond_shape,
+            personalDataResponse.pond_width,
+            personalDataResponse.createdAt,
+            personalDataResponse.updatedAt,
+            personalDataResponse.id
+        )
+
+    }
 }
