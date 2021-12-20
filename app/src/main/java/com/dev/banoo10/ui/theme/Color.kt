@@ -9,6 +9,7 @@ import androidx.compose.ui.graphics.Color
 //val CyanPrim = Color(0xFF1CA7B9)
 //val Circle = Color(0xFF2BB1B1)
 val Red = Color(0xFFA20B34)
+val RedCalendar= Color(0xFFE85252)
 val DarkBlue = Color(0xFF206293)
 val DarkGrey = Color(0xFF8B8E8E)
 

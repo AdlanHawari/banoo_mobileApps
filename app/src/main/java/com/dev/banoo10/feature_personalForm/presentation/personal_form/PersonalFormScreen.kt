@@ -63,6 +63,7 @@ fun PersonalFormScreen(
 
                 is PersonalFormViewModel.UiEvent.ToCalcList -> {
                     navController.navigate(Screen.CalcListScreen.route)
+//                    navController.navigate(Screen.DeleteScreen.route)
                 }
             }
 
@@ -73,6 +74,7 @@ fun PersonalFormScreen(
 //        topBar = {
 //            Text("Hello its page ${pagerState.currentPage}")
 //        },
+        scaffoldState = scaffoldState,
         topBar = {
             PersonalFormIndicator(pagerState.currentPage, personalFormItem.size)
         },
@@ -89,7 +91,7 @@ fun PersonalFormScreen(
 ////            pagerState.stopScroll()
 //        }
 //        Text(text = "This is content side")
-//        Box(modifier = Modifier.fillMaxSize()) {
+        Box(modifier = Modifier.fillMaxSize()) {
             HorizontalPager(
                 count = personalFormItem.size,
                 state = pagerState,
@@ -243,27 +245,27 @@ fun PersonalFormScreen(
 
             }
 
-//            if (state.isLoading){
-//                Box(modifier = Modifier
-//                    .fillMaxSize()
-//                    .background(Color.DarkGray.copy(alpha = .6f)),
-//                    contentAlignment = Alignment.Center
-//                ) {
-//                    Box(modifier = Modifier
-//                        .clip(RoundedCornerShape(12.dp))
-//                        .background(Color.White)
-//                    ){
-//                        CircularProgressIndicator(modifier = Modifier
-//                            .align(Alignment.Center)
-//                            .padding(20.dp))
-//                    }
-//
-//
-//                }
-//
-//            }
+            if (state.isLoading){
+                Box(modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.DarkGray.copy(alpha = .6f)),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Box(modifier = Modifier
+                        .clip(RoundedCornerShape(12.dp))
+                        .background(Color.White)
+                    ){
+                        CircularProgressIndicator(modifier = Modifier
+                            .align(Alignment.Center)
+                            .padding(20.dp))
+                    }
 
-//        }
+
+                }
+
+            }
+
+        }
 
 
 

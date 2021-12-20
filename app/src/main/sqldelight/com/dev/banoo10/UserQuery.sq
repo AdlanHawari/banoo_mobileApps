@@ -15,6 +15,39 @@ CREATE TABLE userTable (
     updatedAt TEXT
 );
 
+CREATE TABLE feedCalcs(
+    id TEXT PRIMARY KEY,
+    feedCalc_name TEXT,
+    startAt TEXT,
+    berat_tebar REAL AS Float,
+    dosis REAL AS Float,
+    createdAt TEXT,
+    updatedAt TEXT
+);
+
+addFeedCalc:
+INSERT OR REPLACE INTO feedCalcs(
+    id,
+    feedCalc_name,
+    startAt,
+    berat_tebar,
+    dosis,
+    createdAt,
+    updatedAt
+)
+VALUES(?,?,?,?,?,?,?);
+
+selectAllFeedCalcs:
+SELECT *
+FROM feedCalcs;
+
+deleteFeedCalcById:
+DELETE FROM feedCalcs
+WHERE id = ?;
+
+deleteAllFeedCalcs:
+DELETE FROM feedCalcs;
+
 selectAccToken:
 SELECT accessToken
 FROM userTable;

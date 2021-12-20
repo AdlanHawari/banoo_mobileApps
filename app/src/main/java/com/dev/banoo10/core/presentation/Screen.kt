@@ -9,4 +9,5 @@ sealed class Screen(val route: String){
     object WelcomeScreen: Screen("welcome_screen")
     object DeleteScreen: Screen("delete_screen")
     object PersonalFormScreen: Screen("personalform_screen")
+    object AddCalculatorScreen: Screen("addcalculator_screen")
 }

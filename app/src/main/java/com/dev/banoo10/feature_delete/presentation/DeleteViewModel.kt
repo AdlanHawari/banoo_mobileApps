@@ -6,11 +6,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.dev.banoo10.UserTable
 import com.dev.banoo10.core.Resource
 import com.dev.banoo10.feature_auth.domain.use_case.AuthUseCases
 import com.dev.banoo10.feature_auth.presentation.login.LoginState
 import com.dev.banoo10.feature_auth.presentation.login.LoginViewModel
 import com.dev.banoo10.feature_auth.presentation.otp_form.OtpFormViewModel
+import com.dev.banoo10.feature_personalForm.presentation.personal_form.PersonalFormViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -28,7 +30,7 @@ class DeleteViewModel  @Inject constructor(
     private val _state = mutableStateOf(DeleteState())
     val state: State<DeleteState> = _state
 
-    private val _eventFlow = MutableSharedFlow<DeleteEvent>()
+    private val _eventFlow = MutableSharedFlow<UiEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
 
     private fun getAccTok() {
@@ -37,8 +39,13 @@ class DeleteViewModel  @Inject constructor(
                 is Resource.Success -> {
                     Log.e("vm", "success")
                     Log.e("result data", result.data.toString())
+                    _eventFlow.emit(
+                        UiEvent.ShowSnackbar(
+                            message = "token:"
+                        )
+                    )
 
-                    _state.value = DeleteState(token = result.data.toString())
+//                    _state.value = DeleteState(token = result.data.toString())
 
 
                 }
@@ -57,9 +64,10 @@ class DeleteViewModel  @Inject constructor(
             .launchIn(viewModelScope)
     }
 
-    private fun getUserData(){
+    private fun getUserData(): List<UserTable>? {
         val data = authUseCases.getUserLocal()
         Log.e("data",data.toString())
+        return data
     }
 
     fun onEvent(event: DeleteEvent){
@@ -67,14 +75,27 @@ class DeleteViewModel  @Inject constructor(
             is DeleteEvent.LogoutClicked -> {
                 viewModelScope.launch {
                     authUseCases.deleteUserLocal()
+                    _eventFlow.emit(UiEvent.LoggedOut)
                 }
 
             }
             is DeleteEvent.ShowClicked -> {
-                getAccTok()
+                viewModelScope.launch {
+                    getAccTok()
+                }
+
+
             }
             is DeleteEvent.ProfileClicked -> {
-                getUserData()
+                viewModelScope.launch {
+                    val a = getUserData()
+                    _eventFlow.emit(
+                        UiEvent.ShowSnackbar(
+                            message = "token: ${a.toString()}"
+                        )
+                    )
+                }
+
             }
         }
     }
@@ -84,7 +105,7 @@ class DeleteViewModel  @Inject constructor(
         //        object MoveFocus:UiEvent()
 //        object SendOTP:UiEvent()
         data class SendOTP(val token: String): UiEvent()
-        object ToPersonalForm:UiEvent()
+        object LoggedOut:UiEvent()
     }
 
 

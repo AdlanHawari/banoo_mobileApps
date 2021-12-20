@@ -17,7 +17,8 @@ import com.dev.banoo10.feature_auth.presentation.ExampleScreen
 import com.dev.banoo10.feature_auth.presentation.login.LoginScreen
 import com.dev.banoo10.feature_auth.presentation.PhoneFormScreen
 import com.dev.banoo10.feature_auth.presentation.otp_form.OtpFormScreen
-import com.dev.banoo10.feature_calculatorList.presentation.CalcListScreen
+import com.dev.banoo10.feature_calculatorList.presentation.add_calculator.presentation.AddCalculatorScreen
+import com.dev.banoo10.feature_calculatorList.presentation.get_calculatorList.CalcListScreen
 import com.dev.banoo10.feature_delete.presentation.DeleteScreen
 import com.dev.banoo10.feature_personalForm.presentation.WelcomeScreen
 import com.dev.banoo10.feature_personalForm.presentation.personal_form.PersonalFormScreen
@@ -43,13 +44,13 @@ class MainActivity : ComponentActivity() {
                     val navController = rememberNavController()
                     NavHost(
                         navController = navController,
-                        startDestination = Screen.LoginScreen.route
+//                        startDestination = Screen.LoginScreen.route
 //                        startDestination = Screen.PhoneFormScreen.route
 //                        startDestination = Screen.DeleteScreen.route
 //                        startDestination = Screen.OtpFormScreen.route
 //                        startDestination = Screen.WelcomeScreen.route
 //                        startDestination = Screen.PersonalFormScreen.route
-//                          startDestination = Screen.CalcListScreen.route
+                          startDestination = Screen.CalcListScreen.route
 //                        startDestination = Screen.ExampleScreen.route
                     ){
                         composable(
@@ -76,7 +77,7 @@ class MainActivity : ComponentActivity() {
 //                            route = Screen.CalcListScreen.route + "/{token}"
                             route = Screen.CalcListScreen.route
                         ){
-                            CalcListScreen()
+                            CalcListScreen(navController = navController)
                         }
                         composable(
                             route = Screen.WelcomeScreen.route
@@ -91,7 +92,12 @@ class MainActivity : ComponentActivity() {
                         composable(
                             route = Screen.DeleteScreen.route
                         ){
-                            DeleteScreen()
+                            DeleteScreen(navController = navController)
+                        }
+                        composable(
+                            route = Screen.AddCalculatorScreen.route
+                        ){
+                            AddCalculatorScreen(navController = navController)
                         }
                     }
                 }

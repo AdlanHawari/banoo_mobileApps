@@ -31,7 +31,7 @@ class PersonalFormViewModel @Inject constructor(
     private val _personalFormState = mutableStateOf(PersonalFormState())
     val personalFormState: State<PersonalFormState> = _personalFormState
 
-    private val _eventFlow = MutableSharedFlow<PersonalFormViewModel.UiEvent>()
+    private val _eventFlow = MutableSharedFlow<UiEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
 
     fun onEvent( event: PersonalFormEvent){
