@@ -1,6 +1,8 @@
 package com.dev.banoo10.feature_calculatorList.presentation.get_calculatorList
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -10,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.dev.banoo10.core.presentation.Screen
@@ -23,6 +26,7 @@ fun CalcListScreen(
     navController: NavController,
     viewModel: CalcListViewModel = hiltViewModel()
 ) {
+    val state = viewModel.calcListState.value
     val scaffoldState = rememberScaffoldState()
 
     LaunchedEffect(key1 = true){
@@ -75,15 +79,32 @@ fun CalcListScreen(
         }
 
     ) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-//            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+        Box(
+            modifier = Modifier.fillMaxSize()
+
         ) {
-            Text(text = "Anda belum memiliki jadwal pakan. Buat sekarang ")
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize(),
+            ){
+                items( state.calculators){ calculator ->
+                    Text(text = calculator.feedcalc_name)
+                    Spacer(modifier = Modifier.height(10.dp))
+                }
+            }
+//            Column(
+//                modifier = Modifier.fillMaxSize(),
+////            verticalArrangement = Arrangement.Center,
+//                horizontalAlignment = Alignment.CenterHorizontally
+//            ) {
+////                Text(text = "Anda belum memiliki jadwal pakan. Buat sekarang ")
+//
+//
+//            }
 
 
         }
+
 
 
     }

@@ -4,13 +4,17 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.dev.banoo10.core.Resource
 import com.dev.banoo10.feature_auth.presentation.otp_form.OtpFormState
 import com.dev.banoo10.feature_auth.presentation.otp_form.OtpFormViewModel
 import com.dev.banoo10.feature_calculatorList.domain.model.NewCalculationModel
+import com.dev.banoo10.feature_calculatorList.domain.use_case.CalculatorUseCases
 import com.dev.banoo10.feature_calculatorList.domain.use_case.add_calculator.AddCalculatorUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.time.format.DateTimeFormatter
@@ -19,7 +23,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddCalculatorViewModel @Inject constructor(
-    private val useCase: AddCalculatorUseCase
+    private val useCase: CalculatorUseCases
 ):ViewModel() {
 
     val calendar = Calendar.getInstance()
@@ -54,14 +58,47 @@ class AddCalculatorViewModel @Inject constructor(
 
             is AddCalculatorEvent.CreateCalculation -> {
                 viewModelScope.launch {
-                    useCase(NewCalculationModel(
-                        name = "Nila",
-                        desc = "ini adalah hahaha",
+                    useCase.addCalculator(NewCalculationModel(
+                        feedcalc_name = "Jancuk",
+                        species = "Nila merah",
                         berat_tebar = 71.65f,
                         dosis = 0.03f,
-                        tebar = simpleDateFormat.parse(_addCalcstate.value.date)
-                    )
-                    )
+//                        startAt = _addCalcstate.value.date
+                        startAt = simpleDateFormat.parse(_addCalcstate.value.date)
+                    ))
+                    .onEach { result ->
+                        when(result){
+                            is Resource.Success -> {
+                                _addCalcstate.value = addCalcstate.value.copy(
+                                    isLoading = false
+                                )
+                                _eventFlow.emit(
+                                    UiEvent.ShowSnackbar(
+                                        message = "sukses gan"
+                                    )
+                                )
+
+                            }
+                            is Resource.Error -> {
+                                _addCalcstate.value = addCalcstate.value.copy(
+                                    isLoading = false
+                                )
+                                _eventFlow.emit(
+                                    UiEvent.ShowSnackbar(
+                                        message = "errroooorrr"
+                                    )
+                                )
+
+                            }
+                            is Resource.Loading -> {
+                                _addCalcstate.value = addCalcstate.value.copy(
+                                    isLoading = true
+                                )
+
+                            }
+                        }
+
+                    }.launchIn(viewModelScope)
 
                 }
             }

@@ -14,6 +14,7 @@ import javax.inject.Inject
 class PersonalDataUseCase @Inject constructor(
     private val repo: PersonalDataRepo
 ) {
+
     suspend operator fun invoke(
         personalDataRequest: PersonalDataRequest
     ): Flow<Resource<PersonalDataResponse>> = flow {

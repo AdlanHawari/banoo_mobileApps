@@ -21,9 +21,21 @@ CREATE TABLE feedCalcs(
     startAt TEXT,
     berat_tebar REAL AS Float,
     dosis REAL AS Float,
+    species TEXT,
     createdAt TEXT,
     updatedAt TEXT
 );
+
+CREATE TABLE feedCalcSched(
+    id INTEGER AS Int PRIMARY KEY,
+    day INTEGER AS Int,
+    pakan_harian REAL AS Float,
+    penyerapan REAL AS Float,
+    berat_akhir REAL AS Float,
+    feedCalcId TEXT
+);
+
+
 
 addFeedCalc:
 INSERT OR REPLACE INTO feedCalcs(
@@ -36,6 +48,18 @@ INSERT OR REPLACE INTO feedCalcs(
     updatedAt
 )
 VALUES(?,?,?,?,?,?,?);
+
+
+addFeedCalcShed:
+INSERT OR REPLACE INTO feedCalcSched(
+    id,
+    day,
+    pakan_harian,
+    penyerapan,
+    berat_akhir,
+    feedCalcId
+)
+VALUES (?,?,?,?,?,?);
 
 selectAllFeedCalcs:
 SELECT *

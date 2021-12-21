@@ -3,12 +3,15 @@ package com.dev.banoo10.feature_calculatorList.presentation.add_calculator.prese
 import android.app.DatePickerDialog
 import android.content.Context
 import android.widget.DatePicker
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -45,6 +48,12 @@ fun AddCalculatorScreen(
     LaunchedEffect(key1 = true){
         viewModel.eventFlow.collectLatest { event ->
             when(event){
+                is AddCalculatorViewModel.UiEvent.ShowSnackbar -> {
+                    scafffoldState.snackbarHostState.showSnackbar(
+                        message = event.message
+                    )
+                }
+
                 is AddCalculatorViewModel.UiEvent.ShowDatePicker -> {
                     datePickerDialog.show()
 
@@ -86,15 +95,7 @@ fun AddCalculatorScreen(
                     onValueChange = {})
                 Spacer(modifier = Modifier.height(10.dp))
 
-                Text(text = "Deskripsi")
-                Spacer(modifier = Modifier.height(4.dp))
-                OutlinedTextField(
-                    modifier = Modifier.fillMaxWidth(),
-                    value = "",
-                    onValueChange = {})
-                Spacer(modifier = Modifier.height(10.dp))
-
-                Text(text = "Berat tebar")
+                Text(text = "Total berat tebar")
                 Spacer(modifier = Modifier.height(4.dp))
                 OutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
@@ -118,6 +119,26 @@ fun AddCalculatorScreen(
                 }) {
                     Text(text = "Buat perhitungan pakan")
                 }
+            }
+
+            if (state.isLoading){
+                Box(modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.DarkGray.copy(alpha = .6f)),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Box(modifier = Modifier
+                        .clip(RoundedCornerShape(12.dp))
+                        .background(Color.White)
+                    ){
+                        CircularProgressIndicator(modifier = Modifier
+                            .align(Alignment.Center)
+                            .padding(20.dp))
+                    }
+
+
+                }
+
             }
         }
     }

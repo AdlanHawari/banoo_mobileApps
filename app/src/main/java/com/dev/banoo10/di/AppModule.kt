@@ -8,6 +8,12 @@ import com.dev.banoo10.feature_auth.domain.use_case.AuthUseCases
 import com.dev.banoo10.feature_auth.domain.use_case.login.*
 import com.dev.banoo10.feature_auth.domain.use_case.otp_form.OtpFormSend
 import com.dev.banoo10.feature_auth.domain.use_case.phone_form.PhoneFormSend
+import com.dev.banoo10.feature_calculatorList.data.repository.CalculatorRepoImpl
+import com.dev.banoo10.feature_calculatorList.domain.repository.CalculatorRepo
+import com.dev.banoo10.feature_calculatorList.domain.use_case.CalculatorUseCases
+import com.dev.banoo10.feature_calculatorList.domain.use_case.add_calculator.AddCalculatorUseCase
+import com.dev.banoo10.feature_calculatorList.domain.use_case.GetAccTokenCalc
+import com.dev.banoo10.feature_calculatorList.domain.use_case.get_calculator.GetCalculatorUseCase
 import com.dev.banoo10.feature_personalForm.data.repository.PersonalDataRepoImpl
 import com.dev.banoo10.feature_personalForm.domain.repository.PersonalDataRepo
 import com.dev.banoo10.feature_personalForm.domain.use_case.PersonalDataUseCase
@@ -19,7 +25,6 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import io.ktor.client.*
 import io.ktor.client.engine.android.*
-import io.ktor.client.features.auth.*
 import io.ktor.client.features.json.*
 import io.ktor.client.features.json.serializer.*
 import io.ktor.client.features.logging.*
@@ -96,5 +101,21 @@ object AppModule {
         return PersonalDataUseCase(repo)
     }
 
+    @Provides
+    @Singleton
+    fun provideCalcRepo(client: HttpClient, database: Database): CalculatorRepo {
+        return CalculatorRepoImpl(client, database)
+    }
+
+
+    @Provides
+    @Singleton
+    fun provideCalcUseCases(repo: CalculatorRepo): CalculatorUseCases{
+        return CalculatorUseCases(
+            getAccTokenLocal = GetAccTokenCalc(repo),
+            addCalculator = AddCalculatorUseCase(repo),
+            getCalculator = GetCalculatorUseCase(repo)
+        )
+    }
 
 }
