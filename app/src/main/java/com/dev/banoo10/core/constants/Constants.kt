@@ -4,4 +4,5 @@ object Constants {
 
     const val PARAM_PHONE = "phone"
     const val PARAM_TOKEN = "token"
+    const val PARAM_CALCID = "calcId"
 }

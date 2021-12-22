@@ -21,7 +21,7 @@ fun NameComponent(
     text: String,
     focusState: Boolean,
     onValueChange: (String) -> Unit,
-    onFilled: (gender: String) -> Unit
+    onFilled: (name: String) -> Unit
 ) {
 
     val focusRequester = FocusRequester()

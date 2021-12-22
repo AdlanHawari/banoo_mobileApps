@@ -44,6 +44,38 @@ class AddCalculatorViewModel @Inject constructor(
 
     fun onEvent(event: AddCalculatorEvent){
         when(event){
+            is AddCalculatorEvent.EnteredNamaBudidaya -> {
+                _addCalcstate.value = addCalcstate.value.copy(
+                    cult_name = addCalcstate.value.cult_name.copy(
+                        value = event.value
+                    )
+                )
+            }
+
+            is AddCalculatorEvent.EnteredSpesies -> {
+                _addCalcstate.value = addCalcstate.value.copy(
+                    spesies = addCalcstate.value.spesies.copy(
+                        value = event.value
+                    )
+                )
+            }
+
+            is AddCalculatorEvent.EnteredBeratTebar -> {
+                _addCalcstate.value = addCalcstate.value.copy(
+                    berat_tebar = addCalcstate.value.berat_tebar.copy(
+                        value = event.value
+                    )
+                )
+            }
+
+            is AddCalculatorEvent.EnteredDosis -> {
+                _addCalcstate.value = addCalcstate.value.copy(
+                    dosis = addCalcstate.value.dosis.copy(
+                        value = event.value
+                    )
+                )
+            }
+
             is AddCalculatorEvent.DatePickerPressed -> {
                 viewModelScope.launch {
                     _eventFlow.emit(UiEvent.ShowDatePicker)
@@ -59,10 +91,11 @@ class AddCalculatorViewModel @Inject constructor(
             is AddCalculatorEvent.CreateCalculation -> {
                 viewModelScope.launch {
                     useCase.addCalculator(NewCalculationModel(
-                        feedcalc_name = "Jancuk",
-                        species = "Nila merah",
-                        berat_tebar = 71.65f,
-                        dosis = 0.03f,
+                        feedcalc_name = _addCalcstate.value.cult_name.value,
+                        species = _addCalcstate.value.spesies.value,
+                        berat_tebar = String.format("%.1f", _addCalcstate.value.berat_tebar.value).toFloat(),
+                        dosis = if (_addCalcstate.value.dosis.value == "3%") 0.03f
+                        else 0.05f,
 //                        startAt = _addCalcstate.value.date
                         startAt = simpleDateFormat.parse(_addCalcstate.value.date)
                     ))
@@ -75,6 +108,11 @@ class AddCalculatorViewModel @Inject constructor(
                                 _eventFlow.emit(
                                     UiEvent.ShowSnackbar(
                                         message = "sukses gan"
+                                    )
+                                )
+                                _eventFlow.emit(
+                                    UiEvent.ToDetailScreen(
+                                        calcId = result.data?.id
                                     )
                                 )
 
@@ -110,7 +148,7 @@ class AddCalculatorViewModel @Inject constructor(
         object ShowDatePicker:UiEvent()
         //        object MoveFocus:UiEvent()
 //        object SendOTP:UiEvent()
-        data class SendOTP(val token: String): UiEvent()
+        data class ToDetailScreen(val calcId: String?): UiEvent()
         object CreateCalculator: UiEvent()
 
     }
