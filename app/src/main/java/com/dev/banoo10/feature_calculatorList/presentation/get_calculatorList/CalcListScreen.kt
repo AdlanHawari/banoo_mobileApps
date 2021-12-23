@@ -88,8 +88,25 @@ fun CalcListScreen(
                     .fillMaxSize(),
             ){
                 items( state.calculators){ calculator ->
-                    Text(text = calculator.feedcalc_name)
+                    Text(text = calculator.feedcalcName)
                     Spacer(modifier = Modifier.height(10.dp))
+                    Text(
+                        text = if (calculator.isStarted){
+                            if (calculator.isDone){
+                                "Sudah selesai"
+                            }else{"Hari ke ${calculator.deltaDay}"}
+                        }else{
+                        "Dimulai ${calculator.deltaDay} hari lagi"
+                        }
+                    )
+
+                    Divider(
+                        color = Color.LightGray,
+                        thickness = 1.dp,
+                        modifier = Modifier
+                            .padding(horizontal = 16.dp)
+                    )
+
                 }
             }
 //            Column(

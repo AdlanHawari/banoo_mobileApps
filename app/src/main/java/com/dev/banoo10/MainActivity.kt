@@ -51,8 +51,8 @@ class MainActivity : ComponentActivity() {
 //                        startDestination = Screen.OtpFormScreen.route
 //                        startDestination = Screen.WelcomeScreen.route
 //                        startDestination = Screen.PersonalFormScreen.route
-//                          startDestination = Screen.CalcListScreen.route
-                          startDestination = Screen.AddCalculatorScreen.route
+                          startDestination = Screen.CalcListScreen.route
+//                          startDestination = Screen.AddCalculatorScreen.route
 //                        startDestination = Screen.ExampleScreen.route
                     ){
                         composable(

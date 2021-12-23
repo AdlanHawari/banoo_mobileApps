@@ -1,10 +1,9 @@
 package com.dev.banoo10.feature_calculatorList.presentation.add_calculator.presentation
 
 import android.app.DatePickerDialog
+import android.util.Log
 import android.widget.DatePicker
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -14,12 +13,17 @@ import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.core.text.isDigitsOnly
@@ -28,6 +32,7 @@ import androidx.navigation.NavController
 import com.dev.banoo10.core.presentation.Screen
 import com.dev.banoo10.feature_calculatorList.presentation.add_calculator.presentation.component.DropDownComponent
 import com.dev.banoo10.feature_calculatorList.presentation.component.TopBarCostum
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
@@ -39,7 +44,11 @@ fun AddCalculatorScreen(
     val state = viewModel.addCalcstate.value
     val context = LocalContext.current
 
+    val labelStyle = MaterialTheme.typography.body2
+
     val space = 20
+
+    val focusManager = LocalFocusManager.current
 
     val datePickerDialog = DatePickerDialog(
         context,
@@ -77,6 +86,20 @@ fun AddCalculatorScreen(
         }
     }
 
+
+//    LaunchedEffect(key1 = true){
+//        delay(1000L)
+//        focusRequester.freeFocus()
+//        delay(1000L)
+//        focusRequester.requestFocus()
+////        Log.e("focus",focusState.toString())
+////        if (focusState == false){
+////            Log.e("fr","should be free")
+////            focusRequester.freeFocus()
+////        }
+//
+//    }
+
     Scaffold(
         scaffoldState = scafffoldState,
         topBar = {
@@ -92,22 +115,29 @@ fun AddCalculatorScreen(
     ) {
         Box(
             modifier = Modifier
-                .fillMaxSize()
+//                .fillMaxSize()
                 .padding(10.dp)
+                .verticalScroll(state = ScrollState(0), enabled = true)
         ) {
             Column(
 
                 modifier = Modifier
-                    .fillMaxSize()
+//                    .fillMaxSize()
                     .padding(horizontal = 10.dp, vertical = 40.dp),
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.Start
 
             ) {
-                Text(text = state.cult_name.label)
+
+                Text(
+                    text = state.cult_name.label,
+                    style = labelStyle
+                )
                 Spacer(modifier = Modifier.height(4.dp))
                 OutlinedTextField(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                    ,
                     value = state.cult_name.value,
                     onValueChange = {
                         if (it.length<35)viewModel.onEvent(AddCalculatorEvent.EnteredNamaBudidaya(it))
@@ -117,15 +147,24 @@ fun AddCalculatorScreen(
 
                 DropDownComponent(
                     label = state.spesies.label,
+                    style = labelStyle,
                     isToggled = false,
                     placeholder = state.spesies.placeholder,
                     options = state.spesies.options,
-                    onSelectedChange = ({viewModel.onEvent(AddCalculatorEvent.EnteredSpesies(it))})
+                    onClick = {
+                            focusManager.clearFocus()
+                    },
+                    onSelectedChange = ({
+                        viewModel.onEvent(AddCalculatorEvent.EnteredSpesies(it))
+                    })
                 )
 
                 Spacer(modifier = Modifier.height(space.dp))
 
-                Text(text = state.berat_tebar.label)
+                Text(
+                    text = state.berat_tebar.label,
+                    style = labelStyle
+                )
                 Spacer(modifier = Modifier.height(4.dp))
                 Row(
                     verticalAlignment = Alignment.CenterVertically
@@ -133,7 +172,8 @@ fun AddCalculatorScreen(
                 ) {
                     OutlinedTextField(
                         modifier = Modifier
-                            .fillMaxWidth(.4f),
+                            .fillMaxWidth(.4f)
+                                ,
                         value = state.berat_tebar.value,
                         onValueChange = {
                             viewModel.onEvent(AddCalculatorEvent.EnteredBeratTebar(it))
@@ -148,20 +188,33 @@ fun AddCalculatorScreen(
 
                 DropDownComponent(
                     label = state.dosis.label,
+                    style = labelStyle,
                     isToggled = false,
                     placeholder = state.dosis.placeholder,
                     options = state.dosis.options,
-                    onSelectedChange = ({viewModel.onEvent(AddCalculatorEvent.EnteredDosis(it))})
+                    onClick = {
+                            focusManager.clearFocus()
+                    },
+                    onSelectedChange = ({
+                        viewModel.onEvent(AddCalculatorEvent.EnteredDosis(it))
+//                        focusRequester.freeFocus()
+                    })
                 )
                 Spacer(modifier = Modifier.height(space.dp))
 
-                Text(text = state.jadwal.label)
+                Text(
+                    text = state.jadwal.label,
+                    style = labelStyle
+                )
                 Spacer(modifier = Modifier.height(4.dp))
                 Row(
                     verticalAlignment = Alignment.CenterVertically
 
                 ) {
-                    Text(text = state.date)
+                    Text(
+                        text = state.date,
+                        style = MaterialTheme.typography.h6
+                    )
                     Spacer(modifier = Modifier.width(10.dp))
 
                     Box(
@@ -191,14 +244,8 @@ fun AddCalculatorScreen(
                         }
 
                     }
-//                    Button(onClick = {
-//
-//                    }) {
-//                        Text(text = "Set Date")
-//                    }
                 }
                 Spacer(modifier = Modifier.height(40.dp))
-
 
                 Button(
                     modifier = Modifier

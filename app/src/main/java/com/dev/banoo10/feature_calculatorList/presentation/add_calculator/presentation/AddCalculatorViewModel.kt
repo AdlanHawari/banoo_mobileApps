@@ -88,12 +88,16 @@ class AddCalculatorViewModel @Inject constructor(
                 )
             }
 
+//            is AddCalculatorEvent.FreeFocus -> {
+//                _addCalcstate.value =
+//            }
+
             is AddCalculatorEvent.CreateCalculation -> {
                 viewModelScope.launch {
                     useCase.addCalculator(NewCalculationModel(
                         feedcalc_name = _addCalcstate.value.cult_name.value,
                         species = _addCalcstate.value.spesies.value,
-                        berat_tebar = String.format("%.1f", _addCalcstate.value.berat_tebar.value).toFloat(),
+                        berat_tebar = String.format("%.1f", _addCalcstate.value.berat_tebar.value.toFloat()).toFloat(),
                         dosis = if (_addCalcstate.value.dosis.value == "3%") 0.03f
                         else 0.05f,
 //                        startAt = _addCalcstate.value.date

@@ -9,5 +9,4 @@ sealed class AddCalculatorEvent {
     data class SetDateStart(val value:String): AddCalculatorEvent()
     object DatePickerPressed: AddCalculatorEvent()
     object CreateCalculation: AddCalculatorEvent()
-    object SendPhone: AddCalculatorEvent()
 }

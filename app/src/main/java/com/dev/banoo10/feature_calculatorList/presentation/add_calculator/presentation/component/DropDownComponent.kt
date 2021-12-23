@@ -14,13 +14,16 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
 
 @Composable
 fun DropDownComponent(
     label: String,
+    style: TextStyle,
     isToggled: Boolean,
+    onClick: () -> Unit,
     placeholder: String,
     options: List<String>,
     onSelectedChange: (String) -> Unit
@@ -30,7 +33,10 @@ fun DropDownComponent(
 
     var textfieldSize by remember { mutableStateOf(Size.Zero)}
 
-    Text(text = label)
+    Text(
+        text = label,
+        style = style
+    )
     Spacer(modifier = Modifier.height(4.dp))
     Box(modifier = Modifier
         .size(200.dp, 60.dp)
@@ -50,6 +56,7 @@ fun DropDownComponent(
             .padding(horizontal = 10.dp)
             .clickable {
                 expanded = !expanded
+                onClick()
             },
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
