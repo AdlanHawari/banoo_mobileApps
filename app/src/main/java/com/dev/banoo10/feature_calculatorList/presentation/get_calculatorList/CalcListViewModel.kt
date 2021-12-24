@@ -10,6 +10,8 @@ import com.dev.banoo10.core.Resource
 import com.dev.banoo10.feature_auth.presentation.otp_form.OtpFormViewModel
 import com.dev.banoo10.feature_calculatorList.domain.use_case.CalculatorUseCases
 import com.dev.banoo10.feature_calculatorList.domain.use_case.get_calculator.GetCalculatorUseCase
+import com.dev.banoo10.feature_calculatorList.presentation.add_calculator.presentation.AddCalculatorViewModel
+import com.dev.banoo10.feature_delete.presentation.DeleteEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -50,6 +52,44 @@ class CalcListViewModel @Inject constructor(
                 }
 
             }
+
+            is CalcListEvent.DeleteCalc -> {
+                _calcListState.value = calcListState.value.copy(
+                    topBarTitle = "Hapus Budidaya",
+                    isDeleteMenu = true
+                )
+            }
+
+            is CalcListEvent.CancelDeleteCalc -> {
+                _calcListState.value = calcListState.value.copy(
+                    topBarTitle = "Daftar Budidaya Anda",
+                    isDeleteMenu = false
+                )
+            }
+
+            is CalcListEvent.DeleteSelectedCalc -> {
+                viewModelScope.launch {
+                    useCase.deleteCalculator(
+                        event.value
+                        ).onEach { result ->
+                        when (result){
+                            is Resource.Success -> {
+                                _eventFlow.emit(
+                                    UiEvent.ShowSnackbar(
+                                        message = "Berhasil menghapus"
+                                    )
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+
+            is CalcListEvent.ToAccountEvent -> {
+                viewModelScope.launch {
+                    _eventFlow.emit(UiEvent.ToAccount)
+                }
+            }
         }
 
     }
@@ -85,6 +125,7 @@ class CalcListViewModel @Inject constructor(
         //        object MoveFocus:UiEvent()
 //        object SendOTP:UiEvent()
         data class CalcDetails(val token: String):UiEvent()
+        object ToAccount: UiEvent()
         object AddCalculator: UiEvent()
 
     }

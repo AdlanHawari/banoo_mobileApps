@@ -13,6 +13,7 @@ import com.dev.banoo10.feature_calculatorList.domain.repository.CalculatorRepo
 import com.dev.banoo10.feature_calculatorList.domain.use_case.CalculatorUseCases
 import com.dev.banoo10.feature_calculatorList.domain.use_case.add_calculator.AddCalculatorUseCase
 import com.dev.banoo10.feature_calculatorList.domain.use_case.GetAccTokenCalc
+import com.dev.banoo10.feature_calculatorList.domain.use_case.delete_calculator.DeleteCalculatorUseCase
 import com.dev.banoo10.feature_calculatorList.domain.use_case.get_calculator.GetCalculatorUseCase
 import com.dev.banoo10.feature_personalForm.data.repository.PersonalDataRepoImpl
 import com.dev.banoo10.feature_personalForm.domain.repository.PersonalDataRepo
@@ -114,7 +115,8 @@ object AppModule {
         return CalculatorUseCases(
             getAccTokenLocal = GetAccTokenCalc(repo),
             addCalculator = AddCalculatorUseCase(repo),
-            getCalculator = GetCalculatorUseCase(repo)
+            getCalculator = GetCalculatorUseCase(repo),
+            deleteCalculator = DeleteCalculatorUseCase(repo)
         )
     }
 

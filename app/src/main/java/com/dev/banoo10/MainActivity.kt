@@ -13,6 +13,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.dev.banoo10.core.presentation.Screen
+import com.dev.banoo10.feature_account.presentation.AccountScreen
 import com.dev.banoo10.feature_auth.presentation.ExampleScreen
 import com.dev.banoo10.feature_auth.presentation.login.LoginScreen
 import com.dev.banoo10.feature_auth.presentation.PhoneFormScreen
@@ -45,13 +46,13 @@ class MainActivity : ComponentActivity() {
                     val navController = rememberNavController()
                     NavHost(
                         navController = navController,
-//                        startDestination = Screen.LoginScreen.route
+                        startDestination = Screen.LoginScreen.route
 //                        startDestination = Screen.PhoneFormScreen.route
 //                        startDestination = Screen.DeleteScreen.route
 //                        startDestination = Screen.OtpFormScreen.route
 //                        startDestination = Screen.WelcomeScreen.route
 //                        startDestination = Screen.PersonalFormScreen.route
-                          startDestination = Screen.CalcListScreen.route
+//                          startDestination = Screen.CalcListScreen.route
 //                          startDestination = Screen.AddCalculatorScreen.route
 //                        startDestination = Screen.ExampleScreen.route
                     ){
@@ -104,7 +105,12 @@ class MainActivity : ComponentActivity() {
                         composable(
                             route = Screen.CalcDetailsScreen.route + "/{calcId}"
                         ){
-                            CalcDetailsScreen()
+                            CalcDetailsScreen(navController = navController)
+                        }
+                        composable(
+                            route = Screen.AccountScreen.route
+                        ){
+                            AccountScreen()
                         }
                     }
                 }

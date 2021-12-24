@@ -10,6 +10,7 @@ object HttpRoutes {
     const val REQ_OTP_URL = "$BASE_URL/auth/reqotp"
     const val SEND_OTP_URL = "$BASE_URL/auth/login"
     const val REQ_EDIT_PROFILE_URL = "$BASE_URL/profile/edit"
-    const val ADD_CALCULATOR_URL = "$BASE_URL/feedcalc/create"
     const val GET_CALCULATOR_URL = "$BASE_URL/feedcalc"
+    const val ADD_CALCULATOR_URL = "$BASE_URL/feedcalc/create"
+    const val DELETE_CALCULATOR_URL = "$BASE_URL/feedcalc/delete"
 }

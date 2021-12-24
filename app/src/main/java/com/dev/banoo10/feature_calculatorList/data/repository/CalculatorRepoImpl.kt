@@ -1,10 +1,12 @@
 package com.dev.banoo10.feature_calculatorList.data.repository
 
 import com.dev.banoo10.Database
+import com.dev.banoo10.FeedCalcs
 import com.dev.banoo10.core.Resource
 import com.dev.banoo10.core.constants.HttpRoutes
 import com.dev.banoo10.feature_calculatorList.data.remote.dto.add_calculator.AddCalcRequest
 import com.dev.banoo10.feature_calculatorList.data.remote.dto.add_calculator.AddCalcResponse
+import com.dev.banoo10.feature_calculatorList.data.remote.dto.delete_calculator.DeleteCalcResponse
 import com.dev.banoo10.feature_calculatorList.data.remote.dto.get_calculatorList.GetCalcListResponse
 import com.dev.banoo10.feature_calculatorList.domain.model.FeedCalcLocalModel
 import com.dev.banoo10.feature_calculatorList.domain.model.SchedCalcLocalModel
@@ -82,5 +84,34 @@ class CalculatorRepoImpl @Inject constructor(
                  append(HttpHeaders.Authorization, "Bearer $accToken")
              }
          }
+    }
+
+    override suspend fun getLocalCalculatorList(): List<FeedCalcs> {
+        return database.userQueryQueries.selectAllFeedCalcs().executeAsList()
+    }
+
+    override suspend fun getDeleteCalculatorbyId(accToken: String, id: String): DeleteCalcResponse {
+        return client.get<DeleteCalcResponse> {
+            url(HttpRoutes.DELETE_CALCULATOR_URL + "/$id")
+            headers {
+                append(HttpHeaders.Authorization, "Bearer $accToken")
+            }
+        }
+    }
+
+    override suspend fun deleteLocalCalculator(id: String) {
+        database.userQueryQueries.deleteFeedCalcById(id)
+    }
+
+    override suspend fun addLocalCalculatorListOnly(feedCalcLocalModel: FeedCalcLocalModel) {
+        database.userQueryQueries.addFeedCalc(
+            feedCalcLocalModel.id,
+            feedCalcLocalModel.feedCalc_name,
+            feedCalcLocalModel.startAt,
+            feedCalcLocalModel.berat_tebar,
+            feedCalcLocalModel.dosis,
+            feedCalcLocalModel.createdAt,
+            feedCalcLocalModel.updatedAt
+        )
     }
 }

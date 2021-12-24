@@ -78,7 +78,7 @@ fun DropDownComponent(
                 .width(with(LocalDensity.current){textfieldSize.width.toDp()}),
             expanded = expanded,
             onDismissRequest = {
-                {expanded = false}
+                expanded = false
             }
         ) {
             options.forEachIndexed {index, item ->

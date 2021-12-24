@@ -2,6 +2,7 @@ package com.dev.banoo10.feature_calculatorList.domain.use_case.add_calculator
 
 import android.util.Log
 import com.dev.banoo10.core.Resource
+import com.dev.banoo10.core.constants.Constants.CULT_DAYS
 import com.dev.banoo10.feature_calculatorList.data.remote.dto.add_calculator.AddCalcRequest
 import com.dev.banoo10.feature_calculatorList.data.remote.dto.add_calculator.AddCalcResponse
 import com.dev.banoo10.feature_calculatorList.domain.model.CalcElement
@@ -28,13 +29,13 @@ class AddCalculatorUseCase @Inject constructor(
 
         val persenAbsorb = 0.7f
 
-        val arrayData = ArrayList<CalcElement>(90)
+        val arrayData = ArrayList<CalcElement>(CULT_DAYS)
 //        Log.e("panjang",arrayData.)
         var a:Float = newCalculationModel.dosis * newCalculationModel.berat_tebar
         var b:Float = persenAbsorb * a
         var c:Float =  newCalculationModel.berat_tebar + b
 
-        (0 until 90).forEach{ index ->
+        (0 until CULT_DAYS).forEach{ index ->
 //            Log.e("ini", index.toString())
             if (index>0){
                 a = newCalculationModel.dosis * arrayData[index - 1].berat_akhir
@@ -85,18 +86,19 @@ class AddCalculatorUseCase @Inject constructor(
 
 
             //store to sqldelight
-//            repo.addLocalCalculator(
-//                FeedCalcLocalModel(
-//                    id = resp.id,
-//                    feedCalc_name = resp.feedcalc_name,
-//                    startAt = resp.startAt,
-//                    berat_tebar = resp.berat_tebar,
-//                    dosis = resp.dosis,
-//                    createdAt = resp.createdAt,
-//                    updatedAt = resp.updatedAt
-//                ),
-//                dataStored
-//            )
+            repo.addLocalCalculator(
+                FeedCalcLocalModel(
+                    id = resp.id,
+                    feedCalc_name = resp.feedcalc_name,
+                    startAt = resp.startAt,
+                    species = resp.species,
+                    berat_tebar = resp.berat_tebar,
+                    dosis = resp.dosis,
+                    createdAt = resp.createdAt,
+                    updatedAt = resp.updatedAt
+                ),
+                dataStored
+            )
 
             emit(Resource.Success<AddCalcResponse>(resp))
             Log.e("use_case",resp.record.size.toString())
