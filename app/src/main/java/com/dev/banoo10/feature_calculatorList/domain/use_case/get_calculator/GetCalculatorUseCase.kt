@@ -4,11 +4,13 @@ import android.util.Log
 import com.dev.banoo10.FeedCalcs
 import com.dev.banoo10.core.Resource
 import com.dev.banoo10.core.constants.Constants.CULT_DAYS
+import com.dev.banoo10.core.constants.DatePattern
 import com.dev.banoo10.core.constants.HttpRoutes
 import com.dev.banoo10.feature_calculatorList.data.remote.dto.get_calculatorList.GetCalcListResponse
 import com.dev.banoo10.feature_calculatorList.domain.model.CalcListModel
 import com.dev.banoo10.feature_calculatorList.domain.model.FeedCalcLocalModel
 import com.dev.banoo10.feature_calculatorList.domain.model.SchedCalcLocalModel
+import com.dev.banoo10.feature_calculatorList.domain.model.UpdateDBResult
 import com.dev.banoo10.feature_calculatorList.domain.repository.CalculatorRepo
 import io.ktor.client.features.*
 import io.ktor.client.request.*
@@ -33,7 +35,7 @@ class GetCalculatorUseCase @Inject constructor(
             Log.e("use_case", resp.toString())
 
 //            val vmData = emptyList<CalcListModel>()
-            updateLocalList(resp)
+            val updatedDB = updateLocalList(resp, repo)
             val vmData = ConvertListRespon(resp)
 
             emit(Resource.Success<List<CalcListModel>>(vmData))
@@ -61,6 +63,7 @@ class GetCalculatorUseCase @Inject constructor(
             ))
 
         } catch(e: Exception) {
+            Log.e("error msg", e.localizedMessage)
             try {
                 val localResp = repo.getLocalCalculatorList()
                 val vmLocal = ConvertListLocal(localResp)
@@ -83,23 +86,101 @@ class GetCalculatorUseCase @Inject constructor(
         }
     }
 
-    private suspend fun updateLocalList(resp: List<GetCalcListResponse>){
+    private suspend fun updateLocalList(resp: List<GetCalcListResponse> ,repo: CalculatorRepo): UpdateDBResult{
 
-        resp.forEach { element ->
+        val result = UpdateDBResult()
 
-            repo.addLocalCalculatorListOnly(
-                FeedCalcLocalModel(
-                    id = element.id,
-                    feedCalc_name = element.feedcalc_name,
-                    startAt = element.startAt,
-                    species = element.species,
-                    berat_tebar = element.berat_tebar,
-                    dosis = element.dosis,
-                    createdAt = element.createdAt,
-                    updatedAt = element.updatedAt
-                )
-            )
+        if(resp.isEmpty()){
+            Log.e("isi resp","kosong")
+            repo.deleteLocalCalculatorList()
+            repo.deleteLocalSchedCalculator()
+        }else{
+            val respLocal = repo.getLocalCalculatorList()
+
+            if (respLocal.isEmpty()){
+
+                resp.forEach { element ->
+                    repo.addLocalCalculatorListOnly(
+                        FeedCalcs(
+                            id = element.id,
+                            feedCalc_name = element.feedcalc_name,
+                            startAt = element.startAt,
+                            species = element.species,
+                            berat_tebar = element.berat_tebar,
+                            dosis = element.dosis,
+                            createdAt = element.createdAt,
+                            updatedAt = element.updatedAt
+                        )
+//                        FeedCalcLocalModel(
+//                            id = element.id,
+//                            feedCalc_name = element.feedcalc_name,
+//                            startAt = element.startAt,
+//                            species = element.species,
+//                            berat_tebar = element.berat_tebar,
+//                            dosis = element.dosis,
+//                            createdAt = element.createdAt,
+//                            updatedAt = element.updatedAt
+//                        )
+                    )
+                }
+
+            }
+            else{
+
+                //start of deleting unexisted remote data in db block
+                //filter local db data which is not exist in remote db
+                fun List<FeedCalcs>.f(fooApiList: List<GetCalcListResponse>) = filterNot { m -> fooApiList.any { it.id == m.id } }
+                val unExistedRemote = respLocal.f(resp)
+//                Log.e("filtered",unExistedRemote.toString())
+
+                unExistedRemote.forEach { element ->
+                    repo.deleteLocalCalculator(element.id)
+                }
+                //end of deleting unexisted remote data in db block
+
+                //start of adding unexisted remote data to db block
+                fun List<GetCalcListResponse>.g(fooApiList: List<FeedCalcs>) = filterNot { m -> fooApiList.any { it.id == m.id } }
+                val unExistedLocal = resp.g(respLocal)
+//                Log.e("filtered",unExistedLocal.toString())
+
+                unExistedLocal.forEach { element ->
+                    repo.addLocalCalculatorListOnly(
+                        FeedCalcs(
+                            id = element.id,
+                            feedCalc_name = element.feedcalc_name,
+                            startAt = element.startAt,
+                            species = element.species,
+                            berat_tebar = element.berat_tebar,
+                            dosis = element.dosis,
+                            createdAt = element.createdAt,
+                            updatedAt = element.updatedAt
+                        )
+                    )
+                }
+
+                //end of adding unexisted remote data to db block
+
+
+            }
+
         }
+        return result
+
+//        resp.forEach { element ->
+//
+//            repo.addLocalCalculatorListOnly(
+//                FeedCalcLocalModel(
+//                    id = element.id,
+//                    feedCalc_name = element.feedcalc_name,
+//                    startAt = element.startAt,
+//                    species = element.species,
+//                    berat_tebar = element.berat_tebar,
+//                    dosis = element.dosis,
+//                    createdAt = element.createdAt,
+//                    updatedAt = element.updatedAt
+//                )
+//            )
+//        }
     }
 
     private fun ConvertListRespon(resp: List<GetCalcListResponse>  ): List<CalcListModel>{
@@ -117,24 +198,34 @@ class GetCalculatorUseCase @Inject constructor(
 
         resp.forEach { element ->
 
-            startTime = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault()).parse(element.startAt).time
+//            startTime = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault()).parse(element.startAt).time
+            startTime = SimpleDateFormat(DatePattern.DATEONLY, Locale.getDefault()).parse(element.startAt).time
             if (startTime > currentTime){
                 Log.e("status","belom mulai")
                 deltaTime = startTime - currentTime
+                leftDays = TimeUnit.MILLISECONDS.toDays(deltaTime).toInt() + 1
                 hasStarted = false
                 hasDone = false
             }else{
                 Log.e("status","udah mulai")
                 deltaTime = currentTime - startTime
+                leftDays = TimeUnit.MILLISECONDS.toDays(deltaTime).toInt() + 1
                 hasStarted = true
-
+                if(leftDays>CULT_DAYS){
+                    hasDone = true
+                }
+                else{
+                    hasDone = false
+                }
             }
-            leftDays = TimeUnit.MILLISECONDS.toDays(deltaTime).toInt()
-            if(leftDays>CULT_DAYS)
-                hasDone = true
-            else{
-                hasDone = false
-            }
+//            Log.e("real time",TimeUnit.MILLISECONDS.toDays(deltaTime).javaClass.simpleName)
+//            leftDays = TimeUnit.MILLISECONDS.toDays(deltaTime).toInt()
+//            if(leftDays>CULT_DAYS){
+//                hasDone = true
+//            }
+//            else{
+//                hasDone = false
+//            }
             Log.e("selisih",leftDays.toString())
 
             vmData.add(
@@ -168,23 +259,25 @@ class GetCalculatorUseCase @Inject constructor(
 
         resp.forEach { element ->
 
-            startTime = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault()).parse(element.startAt).time
+//            startTime = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault()).parse(element.startAt).time
+            startTime = SimpleDateFormat(DatePattern.DATEONLY, Locale.getDefault()).parse(element.startAt).time
             if (startTime > currentTime){
                 Log.e("status","belom mulai")
                 deltaTime = startTime - currentTime
+                leftDays = TimeUnit.MILLISECONDS.toDays(deltaTime).toInt() + 1
                 hasStarted = false
                 hasDone = false
             }else{
                 Log.e("status","udah mulai")
                 deltaTime = currentTime - startTime
+                leftDays = TimeUnit.MILLISECONDS.toDays(deltaTime).toInt() + 1
                 hasStarted = true
-
-            }
-            leftDays = TimeUnit.MILLISECONDS.toDays(deltaTime).toInt()
-            if(leftDays>CULT_DAYS)
-                hasDone = true
-            else{
-                hasDone = false
+                if(leftDays>CULT_DAYS){
+                    hasDone = true
+                }
+                else{
+                    hasDone = false
+                }
             }
             Log.e("selisih",leftDays.toString())
 

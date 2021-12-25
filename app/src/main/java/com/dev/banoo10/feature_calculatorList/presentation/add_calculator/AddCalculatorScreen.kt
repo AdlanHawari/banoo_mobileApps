@@ -1,7 +1,6 @@
-package com.dev.banoo10.feature_calculatorList.presentation.add_calculator.presentation
+package com.dev.banoo10.feature_calculatorList.presentation.add_calculator
 
 import android.app.DatePickerDialog
-import android.util.Log
 import android.widget.DatePicker
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -13,26 +12,20 @@ import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.core.text.isDigitsOnly
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.dev.banoo10.core.presentation.Screen
-import com.dev.banoo10.feature_calculatorList.presentation.add_calculator.presentation.component.DropDownComponent
+import com.dev.banoo10.feature_calculatorList.presentation.add_calculator.component.DropDownComponent
 import com.dev.banoo10.feature_calculatorList.presentation.component.TopBarCostum
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
@@ -40,7 +33,7 @@ fun AddCalculatorScreen(
     navController: NavController,
     viewModel: AddCalculatorViewModel = hiltViewModel()
 ) {
-    val scafffoldState = rememberScaffoldState()
+    val scaffoldState = rememberScaffoldState()
     val state = viewModel.addCalcstate.value
     val context = LocalContext.current
 
@@ -67,7 +60,7 @@ fun AddCalculatorScreen(
         viewModel.eventFlow.collectLatest { event ->
             when(event){
                 is AddCalculatorViewModel.UiEvent.ShowSnackbar -> {
-                    scafffoldState.snackbarHostState.showSnackbar(
+                    scaffoldState.snackbarHostState.showSnackbar(
                         message = event.message
                     )
                 }
@@ -101,7 +94,7 @@ fun AddCalculatorScreen(
 //    }
 
     Scaffold(
-        scaffoldState = scafffoldState,
+        scaffoldState = scaffoldState,
         topBar = {
             TopBarCostum(
                 backButton = true,
@@ -115,15 +108,15 @@ fun AddCalculatorScreen(
     ) {
         Box(
             modifier = Modifier
-//                .fillMaxSize()
-                .padding(10.dp)
-                .verticalScroll(state = ScrollState(0), enabled = true)
+                .fillMaxSize()
+//                .padding(10.dp)
+//                .verticalScroll(state = ScrollState(0), enabled = true)
         ) {
             Column(
 
                 modifier = Modifier
 //                    .fillMaxSize()
-                    .padding(horizontal = 10.dp, vertical = 40.dp),
+                    .padding(horizontal = 10.dp, vertical = 20.dp),
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.Start
 

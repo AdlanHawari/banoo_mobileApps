@@ -1,15 +1,13 @@
-package com.dev.banoo10.feature_calculatorList.presentation.add_calculator.presentation
+package com.dev.banoo10.feature_calculatorList.presentation.add_calculator
 
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dev.banoo10.core.Resource
-import com.dev.banoo10.feature_auth.presentation.otp_form.OtpFormState
-import com.dev.banoo10.feature_auth.presentation.otp_form.OtpFormViewModel
 import com.dev.banoo10.feature_calculatorList.domain.model.NewCalculationModel
 import com.dev.banoo10.feature_calculatorList.domain.use_case.CalculatorUseCases
-import com.dev.banoo10.feature_calculatorList.domain.use_case.add_calculator.AddCalculatorUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -17,7 +15,6 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
-import java.time.format.DateTimeFormatter
 import java.util.*
 import javax.inject.Inject
 
@@ -28,11 +25,13 @@ class AddCalculatorViewModel @Inject constructor(
 
     val calendar = Calendar.getInstance()
 
-    private val _addCalcstate = mutableStateOf(AddCalculatorState(
+    private val _addCalcstate = mutableStateOf(
+        AddCalculatorState(
         year = calendar.get(Calendar.YEAR),
         month = calendar.get(Calendar.MONTH),
         day = calendar.get(Calendar.DAY_OF_MONTH),
-    ))
+    )
+    )
     val addCalcstate: State<AddCalculatorState> = _addCalcstate
 
 
@@ -40,7 +39,7 @@ class AddCalculatorViewModel @Inject constructor(
     private val _eventFlow = MutableSharedFlow<UiEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
 
-    val simpleDateFormat=  SimpleDateFormat("dd/MM/yyyy")
+    val simpleDateFormat=  SimpleDateFormat("dd/MM/yyyy HH:mm:ss")
 
     fun onEvent(event: AddCalculatorEvent){
         when(event){
@@ -93,15 +92,22 @@ class AddCalculatorViewModel @Inject constructor(
 //            }
 
             is AddCalculatorEvent.CreateCalculation -> {
+
+                val a= _addCalcstate.value.berat_tebar.value.toFloat()
+                Log.e("a",a.toString())
+//                if (){
+//
+//                }
                 viewModelScope.launch {
                     useCase.addCalculator(NewCalculationModel(
+
                         feedcalc_name = _addCalcstate.value.cult_name.value,
                         species = _addCalcstate.value.spesies.value,
-                        berat_tebar = String.format("%.1f", _addCalcstate.value.berat_tebar.value.toFloat()).toFloat(),
+                        berat_tebar = _addCalcstate.value.berat_tebar.value.toFloat(),
                         dosis = if (_addCalcstate.value.dosis.value == "3%") 0.03f
                         else 0.05f,
 //                        startAt = _addCalcstate.value.date
-                        startAt = simpleDateFormat.parse(_addCalcstate.value.date)
+                        startAt = simpleDateFormat.parse(_addCalcstate.value.date+" 00:00:00")
                     ))
                     .onEach { result ->
                         when(result){
@@ -109,11 +115,11 @@ class AddCalculatorViewModel @Inject constructor(
                                 _addCalcstate.value = addCalcstate.value.copy(
                                     isLoading = false
                                 )
-                                _eventFlow.emit(
-                                    UiEvent.ShowSnackbar(
-                                        message = "sukses gan"
-                                    )
-                                )
+//                                _eventFlow.emit(
+//                                    UiEvent.ShowSnackbar(
+//                                        message = "sukses gan"
+//                                    )
+//                                )
                                 _eventFlow.emit(
                                     UiEvent.ToDetailScreen(
                                         calcId = result.data?.id
@@ -149,7 +155,7 @@ class AddCalculatorViewModel @Inject constructor(
 
     sealed class UiEvent {
         data class ShowSnackbar(val message: String): UiEvent()
-        object ShowDatePicker:UiEvent()
+        object ShowDatePicker: UiEvent()
         //        object MoveFocus:UiEvent()
 //        object SendOTP:UiEvent()
         data class ToDetailScreen(val calcId: String?): UiEvent()

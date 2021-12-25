@@ -1,5 +1,6 @@
 package com.dev.banoo10.feature_calculatorList.presentation.get_calculatorList
 
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -44,7 +45,9 @@ fun CalcListScreen(
         viewModel.eventFlow.collectLatest { event ->
             when(event){
                 is CalcListViewModel.UiEvent.ShowSnackbar -> {
-
+                    scaffoldState.snackbarHostState.showSnackbar(
+                        message = event.message
+                    )
                 }
 
                 is CalcListViewModel.UiEvent.CalcDetails -> {
@@ -114,11 +117,12 @@ fun CalcListScreen(
                 ,
             ){
                 items( state.calculators){ calculator ->
+//                    Log.e("${calculator.feedcalcName} istarted",calculator.isStarted.toString())
 
                     CalculatorComponent(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(10.dp)
+                            .padding(4.dp)
                             .clickable {
                                 if (!state.isDeleteMenu) {
                                     navController.navigate(
@@ -132,12 +136,12 @@ fun CalcListScreen(
                             },
                         name = calculator.feedcalcName,
                         timeText = if (calculator.isStarted) {
-                            if (calculator.isDone) {
-                                "Sudah selesai"
-                            } else {
-                                "Dimulai ${calculator.deltaDay} hari lagi"
-                            }
-                        } else "Hari ke ${calculator.deltaDay}",
+                                        if (calculator.isDone) {
+                                            "Sudah selesai"
+                                        } else {
+                                            "Hari ke ${calculator.deltaDay}"
+                                        }
+                                    } else "Dimulai ${calculator.deltaDay} hari lagi",
                         textColor = if (!calculator.isDone) Color.Black
                         else Color.LightGray,
                         isDelete = state.isDeleteMenu,

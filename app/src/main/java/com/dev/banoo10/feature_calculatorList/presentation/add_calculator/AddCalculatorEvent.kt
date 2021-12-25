@@ -1,4 +1,4 @@
-package com.dev.banoo10.feature_calculatorList.presentation.add_calculator.presentation
+package com.dev.banoo10.feature_calculatorList.presentation.add_calculator
 
 sealed class AddCalculatorEvent {
 

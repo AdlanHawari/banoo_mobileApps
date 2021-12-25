@@ -3,15 +3,10 @@ package com.dev.banoo10.feature_calculatorList.presentation.get_calculatorList
 import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dev.banoo10.core.Resource
-import com.dev.banoo10.feature_auth.presentation.otp_form.OtpFormViewModel
 import com.dev.banoo10.feature_calculatorList.domain.use_case.CalculatorUseCases
-import com.dev.banoo10.feature_calculatorList.domain.use_case.get_calculator.GetCalculatorUseCase
-import com.dev.banoo10.feature_calculatorList.presentation.add_calculator.presentation.AddCalculatorViewModel
-import com.dev.banoo10.feature_delete.presentation.DeleteEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -106,6 +101,11 @@ class CalcListViewModel @Inject constructor(
                         }
                         is Resource.Error -> {
                             Log.e("error",result.message.toString())
+                            _eventFlow.emit(
+                                UiEvent.ShowSnackbar(
+                                    message = result.message.toString()
+                                )
+                            )
 
                         }
                         is Resource.Loading -> {

@@ -1,7 +1,4 @@
-package com.dev.banoo10.feature_calculatorList.presentation.add_calculator.presentation
-
-import android.content.Context
-import com.dev.banoo10.feature_calculatorList.domain.model.NewCalculationModel
+package com.dev.banoo10.feature_calculatorList.presentation.add_calculator
 
 data class AddCalculatorState (
     val year: Int,

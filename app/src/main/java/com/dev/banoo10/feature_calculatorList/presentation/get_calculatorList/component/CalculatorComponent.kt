@@ -41,7 +41,7 @@ fun CalculatorComponent(
                     fontSize = 18.sp
                 )
             )
-            Spacer(modifier = Modifier.height(6.dp))
+            Spacer(modifier = Modifier.height(2.dp))
             Text(
                 text = timeText,
                 style = MaterialTheme.typography.body2.copy(

@@ -14,6 +14,7 @@ import com.dev.banoo10.feature_personalForm.data.remote.dto.PersonalDataResponse
 import io.ktor.client.features.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import java.text.DecimalFormat
 import java.util.ArrayList
 import javax.inject.Inject
 
@@ -32,8 +33,12 @@ class AddCalculatorUseCase @Inject constructor(
         val arrayData = ArrayList<CalcElement>(CULT_DAYS)
 //        Log.e("panjang",arrayData.)
         var a:Float = newCalculationModel.dosis * newCalculationModel.berat_tebar
+        var aText:String = ""
         var b:Float = persenAbsorb * a
+        var bText:String = ""
         var c:Float =  newCalculationModel.berat_tebar + b
+        var cText:String = ""
+        val dec = DecimalFormat("#.#")
 
         (0 until CULT_DAYS).forEach{ index ->
 //            Log.e("ini", index.toString())
@@ -42,11 +47,28 @@ class AddCalculatorUseCase @Inject constructor(
                 b = persenAbsorb * a
                 c = arrayData[index - 1].berat_akhir + b
             }
+            aText = a.toString()
+            bText = b.toString()
+            cText = c.toString()
+            if (aText.contains(',')){
+                aText.replace(',','.')
+            }
+            if (bText.contains(',')){
+                bText.replace(',','.')
+            }
+            if (cText.contains(',')){
+                cText.replace(',','.')
+            }
+
+
             arrayData.add(CalcElement(
                 day = index + 1,
-                pakan_harian = String.format("%.1f", a).toFloat(),
-                penyerapan = String.format("%.1f", b).toFloat(),
-                berat_akhir = String.format("%.1f", c).toFloat()
+                pakan_harian = aText.toFloat(),
+                penyerapan = bText.toFloat(),
+                berat_akhir = cText.toFloat()
+//                pakan_harian = String.format("%.1f", a).toFloat(),
+//                penyerapan = String.format("%.1f", b).toFloat(),
+//                berat_akhir = String.format("%.1f", c).toFloat()
             ))
 //        Log.e("data $index", arrayData[index].toString())
 

@@ -1,4 +1,4 @@
-package com.dev.banoo10.feature_calculatorList.presentation.calculator_details.presentation
+package com.dev.banoo10.feature_calculatorList.presentation.calculator_details
 
 import android.util.Log
 import androidx.compose.runtime.State

@@ -25,7 +25,12 @@ interface CalculatorRepo {
 
     suspend fun getLocalCalculatorList(): List<FeedCalcs>
 
-    suspend fun addLocalCalculatorListOnly(feedCalcLocalModel: FeedCalcLocalModel)
+//    suspend fun addLocalCalculatorListOnly(feedCalcLocalModel: FeedCalcLocalModel)
+    suspend fun addLocalCalculatorListOnly(feedCalcs: FeedCalcs)
+
+    suspend fun deleteLocalCalculatorList()
+
+    suspend fun deleteLocalSchedCalculator()
 
 
 }

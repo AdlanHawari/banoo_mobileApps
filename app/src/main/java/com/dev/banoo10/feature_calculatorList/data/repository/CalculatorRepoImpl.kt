@@ -103,15 +103,34 @@ class CalculatorRepoImpl @Inject constructor(
         database.userQueryQueries.deleteFeedCalcById(id)
     }
 
-    override suspend fun addLocalCalculatorListOnly(feedCalcLocalModel: FeedCalcLocalModel) {
+//    override suspend fun addLocalCalculatorListOnly(feedCalcLocalModel: FeedCalcLocalModel) {
+//        database.userQueryQueries.addFeedCalc(
+//            feedCalcLocalModel.id,
+//            feedCalcLocalModel.feedCalc_name,
+//            feedCalcLocalModel.startAt,
+//            feedCalcLocalModel.berat_tebar,
+//            feedCalcLocalModel.dosis,
+//            feedCalcLocalModel.createdAt,
+//            feedCalcLocalModel.updatedAt
+//        )
+//    }
+    override suspend fun addLocalCalculatorListOnly(feedCalcs: FeedCalcs) {
         database.userQueryQueries.addFeedCalc(
-            feedCalcLocalModel.id,
-            feedCalcLocalModel.feedCalc_name,
-            feedCalcLocalModel.startAt,
-            feedCalcLocalModel.berat_tebar,
-            feedCalcLocalModel.dosis,
-            feedCalcLocalModel.createdAt,
-            feedCalcLocalModel.updatedAt
+            feedCalcs.id,
+            feedCalcs.feedCalc_name,
+            feedCalcs.startAt,
+            feedCalcs.berat_tebar,
+            feedCalcs.dosis,
+            feedCalcs.createdAt,
+            feedCalcs.updatedAt
         )
+    }
+
+    override suspend fun deleteLocalCalculatorList() {
+        database.userQueryQueries.deleteAllFeedCalcs()
+    }
+
+    override suspend fun deleteLocalSchedCalculator() {
+        database.userQueryQueries.deleteAllFeedCalcSched()
     }
 }

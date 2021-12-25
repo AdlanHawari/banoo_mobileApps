@@ -72,6 +72,9 @@ WHERE id = ?;
 deleteAllFeedCalcs:
 DELETE FROM feedCalcs;
 
+deleteAllFeedCalcSched:
+DELETE FROM feedCalcSched;
+
 selectAccToken:
 SELECT accessToken
 FROM userTable;
