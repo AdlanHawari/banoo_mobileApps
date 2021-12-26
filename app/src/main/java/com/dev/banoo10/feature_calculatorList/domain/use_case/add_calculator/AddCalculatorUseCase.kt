@@ -26,6 +26,7 @@ class AddCalculatorUseCase @Inject constructor(
     suspend operator fun invoke(
         newCalculationModel: NewCalculationModel
     ):Flow<Resource<AddCalcResponse>> = flow{
+        emit(Resource.Loading<AddCalcResponse>())
         Log.e("input", newCalculationModel.toString())
 
         val persenAbsorb = 0.7f
@@ -75,7 +76,7 @@ class AddCalculatorUseCase @Inject constructor(
         }
 
         try {
-            emit(Resource.Loading<AddCalcResponse>())
+//            emit(Resource.Loading<AddCalcResponse>())
             val accToken = repo.getAccessToken()
 
             Log.e("token",accToken)
@@ -108,6 +109,7 @@ class AddCalculatorUseCase @Inject constructor(
 
 
             //store to sqldelight
+            Log.e("resp add",resp.species)
             repo.addLocalCalculator(
                 FeedCalcLocalModel(
                     id = resp.id,

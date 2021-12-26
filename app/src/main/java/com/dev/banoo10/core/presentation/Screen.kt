@@ -12,4 +12,5 @@ sealed class Screen(val route: String){
     object AddCalculatorScreen: Screen("addcalculator_screen")
     object CalcDetailsScreen: Screen("calculatordetails_screen")
     object AccountScreen: Screen("account_screen")
+    object CalendarScreen: Screen("calendar_screen")
 }

@@ -4,5 +4,5 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class DeleteCalcResponse(
-    val delete: Int
+    val deleted: Int
 )

@@ -65,18 +65,42 @@ class CalcListViewModel @Inject constructor(
             is CalcListEvent.DeleteSelectedCalc -> {
                 viewModelScope.launch {
                     useCase.deleteCalculator(
-                        event.value
-                        ).onEach { result ->
-                        when (result){
-                            is Resource.Success -> {
-                                _eventFlow.emit(
-                                    UiEvent.ShowSnackbar(
-                                        message = "Berhasil menghapus"
+                        event.value)
+                        .onEach { result ->
+                            when (result){
+                                is Resource.Success -> {
+                                    _calcListState.value = calcListState.value.copy(
+                                        isLoading = false,
+                                        isDeleteMenu = false
                                     )
-                                )
+                                    _eventFlow.emit(
+                                        UiEvent.ShowSnackbar(
+                                            message = "Berhasil menghapus"
+                                        )
+                                    )
+                                    getCalcList()
+                                }
+
+                                is Resource.Error -> {
+                                    _calcListState.value = calcListState.value.copy(
+                                        isLoading = false
+                                    )
+                                    _eventFlow.emit(
+                                        UiEvent.ShowSnackbar(
+                                            message = result.message.toString()
+                                        )
+                                    )
+
+                                }
+
+                                is Resource.Loading -> {
+                                    _calcListState.value = calcListState.value.copy(
+                                        isLoading = true
+                                    )
+
+                                }
                             }
-                        }
-                    }
+                    }.launchIn(viewModelScope)
                 }
             }
 
@@ -95,11 +119,17 @@ class CalcListViewModel @Inject constructor(
                 .onEach { result ->
                     when(result){
                         is Resource.Success -> {
+                            _calcListState.value = calcListState.value.copy(
+                                isLoading = false
+                            )
                             Log.e("result",result.data.toString())
                             _calcListState.value = CalcListState(calculators = result.data ?: emptyList())
 
                         }
                         is Resource.Error -> {
+                            _calcListState.value = calcListState.value.copy(
+                                isLoading = false
+                            )
                             Log.e("error",result.message.toString())
                             _eventFlow.emit(
                                 UiEvent.ShowSnackbar(
@@ -110,7 +140,9 @@ class CalcListViewModel @Inject constructor(
                         }
                         is Resource.Loading -> {
                             Log.e("loading","ehem")
-
+                            _calcListState.value = calcListState.value.copy(
+                                isLoading = true
+                            )
                         }
                     }
                 }.launchIn(viewModelScope)

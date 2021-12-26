@@ -21,7 +21,7 @@ class DeleteCalculatorUseCase @Inject constructor(
             val resp = repo.getDeleteCalculatorbyId(token, calcId)
             Log.e("use_case", resp.toString())
 
-            if (resp.delete>0){
+            if (resp.deleted>0){
                 repo.deleteLocalCalculator(calcId)
 //                repo.getLocalCalculatorList()
             }
@@ -33,6 +33,7 @@ class DeleteCalculatorUseCase @Inject constructor(
         }catch(e: RedirectResponseException) {
             // 3xx - responses
             println("Error: ${e.response.status.description}")
+            Log.e("error msg",e.localizedMessage)
             emit(Resource.Error<DeleteCalcResponse>(
                 message = "Redirected"
             ))
@@ -40,6 +41,7 @@ class DeleteCalculatorUseCase @Inject constructor(
         } catch(e: ClientRequestException) {
             // 4xx - responses
             println("Error: ${e.response.status.description}")
+            Log.e("error msg",e.localizedMessage)
             emit(Resource.Error<DeleteCalcResponse>(
                 message = "Client Error"
             ))
@@ -47,12 +49,14 @@ class DeleteCalculatorUseCase @Inject constructor(
         } catch(e: ServerResponseException) {
             // 5xx - responses
             println("Error: ${e.response.status.description}")
+            Log.e("error msg",e.localizedMessage)
             emit(Resource.Error<DeleteCalcResponse>(
                 message = "Server Error"
             ))
 
         } catch(e: Exception) {
             println("Error: ${e.message}")
+            Log.e("error msg",e.localizedMessage)
             emit(Resource.Error<DeleteCalcResponse>(
                 message = "Terjadi kesalahan. Periksa koneksi anda"
             ))

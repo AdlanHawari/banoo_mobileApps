@@ -34,8 +34,6 @@ class AddCalculatorViewModel @Inject constructor(
     )
     val addCalcstate: State<AddCalculatorState> = _addCalcstate
 
-
-
     private val _eventFlow = MutableSharedFlow<UiEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
 

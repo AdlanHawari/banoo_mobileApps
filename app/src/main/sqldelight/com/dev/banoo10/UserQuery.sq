@@ -44,10 +44,11 @@ INSERT OR REPLACE INTO feedCalcs(
     startAt,
     berat_tebar,
     dosis,
+    species,
     createdAt,
     updatedAt
 )
-VALUES(?,?,?,?,?,?,?);
+VALUES(?,?,?,?,?,?,?,?);
 
 
 addFeedCalcShed:
@@ -64,6 +65,16 @@ VALUES (?,?,?,?,?,?);
 selectAllFeedCalcs:
 SELECT *
 FROM feedCalcs;
+
+selectFeedCalcsById:
+SELECT *
+FROM feedCalcs
+WHERE id = ?;
+
+selectFeedCalcSchedById:
+SELECT *
+FROM feedCalcSched
+WHERE feedCalcId = ?;
 
 deleteFeedCalcById:
 DELETE FROM feedCalcs

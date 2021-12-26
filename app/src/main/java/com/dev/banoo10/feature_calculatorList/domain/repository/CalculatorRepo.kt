@@ -1,5 +1,6 @@
 package com.dev.banoo10.feature_calculatorList.domain.repository
 
+import com.dev.banoo10.FeedCalcSched
 import com.dev.banoo10.FeedCalcs
 import com.dev.banoo10.feature_calculatorList.data.remote.dto.add_calculator.AddCalcRequest
 import com.dev.banoo10.feature_calculatorList.data.remote.dto.add_calculator.AddCalcResponse
@@ -31,6 +32,10 @@ interface CalculatorRepo {
     suspend fun deleteLocalCalculatorList()
 
     suspend fun deleteLocalSchedCalculator()
+
+    suspend fun getLocalCalculatorListById(id: String): FeedCalcs
+
+    suspend fun getLocalSchedCalculatorById(id: String): List<FeedCalcSched>
 
 
 }

@@ -1,6 +1,7 @@
 package com.dev.banoo10.feature_calculatorList.data.repository
 
 import com.dev.banoo10.Database
+import com.dev.banoo10.FeedCalcSched
 import com.dev.banoo10.FeedCalcs
 import com.dev.banoo10.core.Resource
 import com.dev.banoo10.core.constants.HttpRoutes
@@ -48,13 +49,14 @@ class CalculatorRepoImpl @Inject constructor(
         schedCalcLocalModel: ArrayList<SchedCalcLocalModel>
     ) {
         database.userQueryQueries.addFeedCalc(
-            feedCalcLocalModel.id,
-            feedCalcLocalModel.feedCalc_name,
-            feedCalcLocalModel.startAt,
-            feedCalcLocalModel.berat_tebar,
-            feedCalcLocalModel.dosis,
-            feedCalcLocalModel.createdAt,
-            feedCalcLocalModel.updatedAt
+            id = feedCalcLocalModel.id,
+            feedCalc_name = feedCalcLocalModel.feedCalc_name,
+            startAt = feedCalcLocalModel.startAt,
+            berat_tebar = feedCalcLocalModel.berat_tebar,
+            dosis = feedCalcLocalModel.dosis,
+            species = feedCalcLocalModel.species,
+            createdAt = feedCalcLocalModel.createdAt,
+            updatedAt = feedCalcLocalModel.updatedAt
         )
 
         schedCalcLocalModel.forEach { element ->
@@ -67,14 +69,6 @@ class CalculatorRepoImpl @Inject constructor(
                 element.feedCalcId
             )
         }
-//        database.userQueryQueries.addFeedCalcShed(
-//            schedCalcLocalModel.id,
-//            schedCalcLocalModel.day,
-//            schedCalcLocalModel.pakan_harian,
-//            schedCalcLocalModel.penyerapan,
-//            schedCalcLocalModel.berat_akhir,
-//            schedCalcLocalModel.feedCalcId
-//        )
     }
 
     override suspend fun getCalculatorList(accToken: String): List<GetCalcListResponse> {
@@ -103,26 +97,16 @@ class CalculatorRepoImpl @Inject constructor(
         database.userQueryQueries.deleteFeedCalcById(id)
     }
 
-//    override suspend fun addLocalCalculatorListOnly(feedCalcLocalModel: FeedCalcLocalModel) {
-//        database.userQueryQueries.addFeedCalc(
-//            feedCalcLocalModel.id,
-//            feedCalcLocalModel.feedCalc_name,
-//            feedCalcLocalModel.startAt,
-//            feedCalcLocalModel.berat_tebar,
-//            feedCalcLocalModel.dosis,
-//            feedCalcLocalModel.createdAt,
-//            feedCalcLocalModel.updatedAt
-//        )
-//    }
     override suspend fun addLocalCalculatorListOnly(feedCalcs: FeedCalcs) {
         database.userQueryQueries.addFeedCalc(
-            feedCalcs.id,
-            feedCalcs.feedCalc_name,
-            feedCalcs.startAt,
-            feedCalcs.berat_tebar,
-            feedCalcs.dosis,
-            feedCalcs.createdAt,
-            feedCalcs.updatedAt
+            id = feedCalcs.id,
+            feedCalc_name = feedCalcs.feedCalc_name,
+            startAt = feedCalcs.startAt,
+            berat_tebar = feedCalcs.berat_tebar,
+            dosis = feedCalcs.dosis,
+            species = feedCalcs.species,
+            createdAt = feedCalcs.createdAt,
+            updatedAt = feedCalcs.updatedAt
         )
     }
 
@@ -132,5 +116,13 @@ class CalculatorRepoImpl @Inject constructor(
 
     override suspend fun deleteLocalSchedCalculator() {
         database.userQueryQueries.deleteAllFeedCalcSched()
+    }
+
+    override suspend fun getLocalCalculatorListById(id: String): FeedCalcs {
+        return database.userQueryQueries.selectFeedCalcsById(id).executeAsOne()
+    }
+
+    override suspend fun getLocalSchedCalculatorById(id: String): List<FeedCalcSched> {
+        return database.userQueryQueries.selectFeedCalcSchedById(id).executeAsList()
     }
 }
