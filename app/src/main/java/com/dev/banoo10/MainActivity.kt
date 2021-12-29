@@ -114,11 +114,12 @@ class MainActivity : ComponentActivity() {
                         ){
                             AccountScreen()
                         }
-                        composable(
-                            route = Screen.CalendarScreen.route
-                        ){
-                            CalendarViewComponent()
-                        }
+//                        composable(
+//                            route = Screen.CalendarScreen.route
+//                        ){
+//                            CalendarViewComponent(
+//                            )
+//                        }
                     }
                 }
             }

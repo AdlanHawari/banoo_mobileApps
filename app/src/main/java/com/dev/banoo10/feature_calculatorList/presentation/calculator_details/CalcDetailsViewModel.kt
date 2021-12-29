@@ -10,6 +10,8 @@ import com.dev.banoo10.core.Resource
 import com.dev.banoo10.core.constants.Constants
 import com.dev.banoo10.feature_calculatorList.domain.use_case.CalculatorUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -21,57 +23,72 @@ class CalcDetailsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ): ViewModel(){
 
-    private val _calcDetailState = mutableStateOf(CalcDetailsState())
-    val calcDetailsState: State<CalcDetailsState> = _calcDetailState
+    private val _calcDetailsState = mutableStateOf(CalcDetailsState())
+    val calcDetailsState: State<CalcDetailsState> = _calcDetailsState
+
+    private val _eventFlow = MutableSharedFlow<UiEvent>()
+    val eventFlow = _eventFlow.asSharedFlow()
 
     init {
+//        viewModelScope.launch {
+//            _eventFlow.emit(UiEvent.ShowSnackbar(message = "aaaaa"))
+//        }
+
         savedStateHandle.get<String>(Constants.PARAM_CALCID)?.let { id ->
-//            _calcDetailState.value = calcDetailsState.value.copy(
+//            _calcDetailsState.value = calcDetailsState.value.copy(
+//                isLoading = true,
 //                id = id
 //            )
-            Log.e("calcid",id)
             getDetails(id)
 
-
         }
+//        getDetails("uhuy")
+//
     }
 
-    fun getDetails(id: String){
+    fun getDetails(id:String){
         viewModelScope.launch {
-            useCases.getDetails(id)
-                .onEach { result ->
-                    when (result){
-                        is Resource.Success -> {
-                            Log.e("result details",result.data.toString())
-                            _calcDetailState.value = calcDetailsState.value.copy(
-                                isLoading = false,
-                                name = result.data!!.name
+            useCases.getDetails(id).onEach { result ->
+                when (result){
+                    is Resource.Success -> {
+                        _calcDetailsState.value = calcDetailsState.value.copy(
+                            isLoading = false,
+                            name = result.data!!.feedCalc_name,
+                            calendarList = result.data.calendarList,
+                            startAt = result.data.startAt,
+                            endAt = result.data.endAt,
 
-                            )
+//                            id = id
+                        )
+//                        Log.e("data",result.data.toString())
 
-
-                        }
-
-                        is Resource.Error -> {
-                            _calcDetailState.value = calcDetailsState.value.copy(
-                                isLoading = false
-                            )
-
-
-                        }
-
-                        is Resource.Loading -> {
-                            _calcDetailState.value = calcDetailsState.value.copy(
-                                isLoading = true
-                            )
-
-
-                        }
                     }
-                }.launchIn(viewModelScope)
+                    is Resource.Error -> {
+                        Log.e("data", result.message.toString())
+                        _eventFlow.emit(
+                            UiEvent.ShowSnackbar(
+                                message = result.message.toString()
+                            )
+                        )
+
+                    }
+                    is Resource.Loading -> {
+                        Log.e("uhuy","ihiy")
+                        _calcDetailsState.value = calcDetailsState.value.copy(
+                            isLoading = true
+//                            id = id
+                        )
+
+                    }
+                }
+            }.launchIn(viewModelScope)
+
+
         }
+
     }
 
-
-
+    sealed class UiEvent{
+        data class ShowSnackbar(val message: String):UiEvent()
+    }
 }

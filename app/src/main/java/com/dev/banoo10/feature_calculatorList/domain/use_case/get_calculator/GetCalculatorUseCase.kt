@@ -35,7 +35,7 @@ class GetCalculatorUseCase @Inject constructor(
             Log.e("use_case", resp.toString())
 
 //            val vmData = emptyList<CalcListModel>()
-            val updatedDB = updateLocalList(resp, repo)
+            val updatedDB = UpdateLocalList(resp, repo)
             val vmData = ConvertListRespon(resp)
 
             emit(Resource.Success<List<CalcListModel>>(vmData))
@@ -86,7 +86,7 @@ class GetCalculatorUseCase @Inject constructor(
         }
     }
 
-    private suspend fun updateLocalList(resp: List<GetCalcListResponse> ,repo: CalculatorRepo): UpdateDBResult{
+    private suspend fun UpdateLocalList(resp: List<GetCalcListResponse> ,repo: CalculatorRepo): UpdateDBResult{
 
         val result = UpdateDBResult()
 

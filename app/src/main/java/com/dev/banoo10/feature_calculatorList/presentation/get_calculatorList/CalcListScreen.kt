@@ -161,6 +161,7 @@ fun CalcListScreen(
                             .clickable {
                                 if (!state.isDeleteMenu) {
 //                                    Log.e("calcId",calculator.calcId)
+//                                    Log.e("cl s", "moving screen")
                                     navController.navigate(
                                         Screen.CalcDetailsScreen.route + "/${calculator.calcId}"
                                     )
