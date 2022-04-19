@@ -120,7 +120,7 @@ class AddCalculatorViewModel @Inject constructor(
 //                                )
                                 _eventFlow.emit(
                                     UiEvent.ToDetailScreen(
-                                        calcId = result.data?.id
+                                        calcId = result.data?.uuid
                                     )
                                 )
 

@@ -56,7 +56,8 @@ class CalculatorRepoImpl @Inject constructor(
             dosis = feedCalcLocalModel.dosis,
             species = feedCalcLocalModel.species,
             createdAt = feedCalcLocalModel.createdAt,
-            updatedAt = feedCalcLocalModel.updatedAt
+            updatedAt = feedCalcLocalModel.updatedAt,
+            uuid = feedCalcLocalModel.uuid
         )
 
         schedCalcLocalModel.forEach { element ->
@@ -106,7 +107,8 @@ class CalculatorRepoImpl @Inject constructor(
             dosis = feedCalcs.dosis,
             species = feedCalcs.species,
             createdAt = feedCalcs.createdAt,
-            updatedAt = feedCalcs.updatedAt
+            updatedAt = feedCalcs.updatedAt,
+            uuid = feedCalcs.uuid
         )
     }
 

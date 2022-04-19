@@ -8,7 +8,7 @@ import kotlin.collections.ArrayList
 
 @Serializable
 data class AddCalcResponse(
-    val id: String,
+    val id: Int,
     val feedcalc_name: String,
     val startAt: String,
     val berat_tebar: Float,
@@ -16,6 +16,7 @@ data class AddCalcResponse(
     val species: String,
     val userId: String,
     val updatedAt: String,
+    val uuid: String,
     val createdAt: String,
     val record: ArrayList<Record>
 

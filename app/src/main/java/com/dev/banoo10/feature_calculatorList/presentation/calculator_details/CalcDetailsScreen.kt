@@ -21,6 +21,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.dev.banoo10.calendar_view.presentation.CalendarComponent
 import com.dev.banoo10.calendar_view.presentation.CalendarViewComponent
+import com.dev.banoo10.core.presentation.Screen
 import com.dev.banoo10.feature_calculatorList.presentation.component.TopBarCostum
 import com.dev.banoo10.ui.theme.Cyan600
 import com.dev.banoo10.ui.theme.Cyan800
@@ -75,6 +76,7 @@ fun CalcDetailsScreen(
                 title = state.name,
 //                title = "ujang",
                 actionButtonAsIcon = true,
+                backDestination = Screen.CalcListScreen.route,
                 backButton = true,
                 navController = navController
             )
@@ -111,8 +113,8 @@ fun CalcDetailsScreen(
 
                 HorizontalPager(
                     modifier = Modifier
-//                        .background(Cyan600)
-                        .fillMaxHeight(.54f),
+                        .background(Cyan600)
+                        .fillMaxHeight(.55f),
                     verticalAlignment = Alignment.Top,
                     count = state.calendarList.size,
                     state = pagerState
@@ -133,6 +135,7 @@ fun CalcDetailsScreen(
 
                     )
                 }
+                Text(text = "mantap")
 
                 Row(
                     modifier = Modifier.fillMaxWidth(),

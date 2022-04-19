@@ -4,7 +4,7 @@ CREATE TABLE userTable (
     age INTEGER AS Int,
     createdAt TEXT,
     gender TEXT,
-    id TEXT PRIMARY KEY,
+    id INTEGER AS Int PRIMARY KEY,
     name TEXT,
     phone TEXT,
     pond_depth REAL AS Float,
@@ -16,14 +16,15 @@ CREATE TABLE userTable (
 );
 
 CREATE TABLE feedCalcs(
-    id TEXT PRIMARY KEY,
+    id INTEGER AS Int PRIMARY KEY,
     feedCalc_name TEXT,
     startAt TEXT,
     berat_tebar REAL AS Float,
     dosis REAL AS Float,
     species TEXT,
     createdAt TEXT,
-    updatedAt TEXT
+    updatedAt TEXT,
+    uuid TEXT NOT NULL
 );
 
 CREATE TABLE feedCalcSched(
@@ -32,7 +33,7 @@ CREATE TABLE feedCalcSched(
     pakan_harian REAL AS Float,
     penyerapan REAL AS Float,
     berat_akhir REAL AS Float,
-    feedCalcId TEXT
+    feedCalcId TEXT NOT NULL
 );
 
 
@@ -46,9 +47,10 @@ INSERT OR REPLACE INTO feedCalcs(
     dosis,
     species,
     createdAt,
-    updatedAt
+    updatedAt,
+    uuid
 )
-VALUES(?,?,?,?,?,?,?,?);
+VALUES(?,?,?,?,?,?,?,?, ?);
 
 
 addFeedCalcShed:
@@ -69,7 +71,7 @@ FROM feedCalcs;
 selectFeedCalcsById:
 SELECT *
 FROM feedCalcs
-WHERE id = ?;
+WHERE uuid = ?;
 
 selectFeedCalcSchedById:
 SELECT *
@@ -78,7 +80,7 @@ WHERE feedCalcId = ?;
 
 deleteFeedCalcById:
 DELETE FROM feedCalcs
-WHERE id = ?;
+WHERE uuid = ?;
 
 deleteAllFeedCalcs:
 DELETE FROM feedCalcs;

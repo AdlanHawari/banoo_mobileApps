@@ -109,7 +109,8 @@ class GetCalculatorUseCase @Inject constructor(
                             berat_tebar = element.berat_tebar,
                             dosis = element.dosis,
                             createdAt = element.createdAt,
-                            updatedAt = element.updatedAt
+                            updatedAt = element.updatedAt,
+                            uuid = element.uuid
                         )
 //                        FeedCalcLocalModel(
 //                            id = element.id,
@@ -134,7 +135,7 @@ class GetCalculatorUseCase @Inject constructor(
 //                Log.e("filtered",unExistedRemote.toString())
 
                 unExistedRemote.forEach { element ->
-                    repo.deleteLocalCalculator(element.id)
+                    repo.deleteLocalCalculator(element.uuid)
                 }
                 //end of deleting unexisted remote data in db block
 
@@ -153,7 +154,8 @@ class GetCalculatorUseCase @Inject constructor(
                             berat_tebar = element.berat_tebar,
                             dosis = element.dosis,
                             createdAt = element.createdAt,
-                            updatedAt = element.updatedAt
+                            updatedAt = element.updatedAt,
+                            uuid = element.uuid
                         )
                     )
                 }
@@ -231,7 +233,7 @@ class GetCalculatorUseCase @Inject constructor(
             vmData.add(
                 CalcListModel(
                     feedcalcName = element.feedcalc_name,
-                    calcId = element.id,
+                    calcId = element.uuid,
                     isDone = hasDone,
                     isStarted = hasStarted,
                     deltaDay = leftDays,
@@ -284,7 +286,7 @@ class GetCalculatorUseCase @Inject constructor(
             vmData.add(
                 CalcListModel(
                     feedcalcName = element.feedCalc_name!!,
-                    calcId = element.id,
+                    calcId = element.uuid,
                     isDone = hasDone,
                     isStarted = hasStarted,
                     deltaDay = leftDays,

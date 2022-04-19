@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class PersonalDataResponse (
-    val id: String,
+    val id: Int,
     val phone: String,
     val name: String,
     val gender: String,
@@ -16,5 +16,5 @@ data class PersonalDataResponse (
     val pond_width: Float,
     val pond_depth: Float,
     val createdAt: String,
-    val updatedAt: String
+    val updatedAt: String,
 )

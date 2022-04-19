@@ -26,6 +26,7 @@ fun TopBarCostum(
     backgroundColor: Color = MaterialTheme.colors.primary,
     contentColor: Color = contentColorFor(backgroundColor),
     navController: NavController? = null,
+    backDestination: String? = null,
     dropDownOptions: List<String> = emptyList(),
     onClickDropDownItem: List<() -> Unit> = emptyList(),
     onClickTextButton: () -> Unit? = {}
@@ -54,7 +55,12 @@ fun TopBarCostum(
         {
             {
             IconButton(onClick = {
-                navController?.navigateUp()
+
+                if (backDestination != null) {
+                    navController?.navigate(backDestination)
+                }else{
+                    navController?.navigateUp()
+                }
             }) {
                 Icon(
                     imageVector = Icons.Default.ArrowBack,

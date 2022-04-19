@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class GetCalcListResponse(
-    val id: String,
+    val id: Int,
     val feedcalc_name: String,
     val startAt: String,
     val berat_tebar: Float,
@@ -12,5 +12,6 @@ data class GetCalcListResponse(
     val species: String,
     val createdAt: String,
     val updatedAt: String,
-    val userId: String
+    val userId: String,
+    val uuid: String
 )

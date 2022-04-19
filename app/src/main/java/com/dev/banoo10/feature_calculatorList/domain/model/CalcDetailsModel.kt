@@ -2,7 +2,7 @@ package com.dev.banoo10.feature_calculatorList.domain.model
 
 data class CalcDetailsModel(
 
-    val id: String,
+    val id: Int,
     val feedCalc_name: String,
     val startAt: String,
     val endAt: String,

@@ -9,7 +9,7 @@ data class UserModel (
     val age: Int? =null,
     val createdAt: String? =null,
     val gender: String? =null,
-    val id: String,
+    val id: Int,
     val name: String? =null,
     val phone: String? =null,
     val pond_depth: Float? =null,
@@ -17,6 +17,6 @@ data class UserModel (
     val pond_shape: String? =null,
     val pond_width: Float? =null,
     val species: String? =null,
-    val updatedAt: String? =null
-
+    val updatedAt: String? =null,
+    val userId: String
 )

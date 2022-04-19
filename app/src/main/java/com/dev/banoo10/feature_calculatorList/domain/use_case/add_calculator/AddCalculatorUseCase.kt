@@ -119,7 +119,8 @@ class AddCalculatorUseCase @Inject constructor(
                     berat_tebar = resp.berat_tebar,
                     dosis = resp.dosis,
                     createdAt = resp.createdAt,
-                    updatedAt = resp.updatedAt
+                    updatedAt = resp.updatedAt,
+                    uuid = resp.uuid
                 ),
                 dataStored
             )
